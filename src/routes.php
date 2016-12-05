@@ -7,29 +7,39 @@ $auth_token = $c['settings']['security']['token'];
 // get all messages
 $app->get('/try', function ($request, $response, $args) {
     global $auth_token;
-    $token = $_GET['token'];   
-    
+    $this->logger->addInfo("try GET request, started");
+    $token = "";
+    if(isset($_GET['token'])) $token = $_GET['token'];    
     $headers = $request->getHeaders();
-    $head_auth_token = trim($headers["HTTP_X_AUTH_TOKEN"][0]);
-    if(empty($token)) {
-        $token = $head_auth_token;
+    # TODO Undefined index: HTTP_X_AUTH_TOKEN
+    if(isset($headers["HTTP_X_AUTH_TOKEN"])) {
+        $head_auth_token = trim($headers["HTTP_X_AUTH_TOKEN"][0]);
+        if(empty($token)) {
+            $token = $head_auth_token;
+        }
     }
     if($token != $auth_token) 
     {
         throw new InvalidArgumentException('Wrong Auth Token');
     }
+    $this->logger->addInfo("try GET request, terminated");
     return $this->response->withJson(array("retcode"=>"0", "message"=>"Your test succedeed!"));
 });
 
 // get all messages
 $app->get('/messages', function ($request, $response, $args) {
     global $auth_token;
-    $token = $_GET['token'];   
+    $this->logger->addInfo("messages GET request, started");
+    $token = "";
+    if(isset($_GET['token'])) $token = $_GET['token'];    
     
     $headers = $request->getHeaders();
-    $head_auth_token = trim($headers["HTTP_X_AUTH_TOKEN"][0]);
-    if(empty($token)) {
-        $token = $head_auth_token;
+    # TODO Undefined index: HTTP_X_AUTH_TOKEN
+    if(isset($headers["HTTP_X_AUTH_TOKEN"])) {
+        $head_auth_token = trim($headers["HTTP_X_AUTH_TOKEN"][0]);
+        if(empty($token)) {
+            $token = $head_auth_token;
+        }
     }
     if($token != $auth_token) 
     {
@@ -80,18 +90,24 @@ $app->get('/messages', function ($request, $response, $args) {
                        , "data"=> $dataArray
                        );
     }
+    $this->logger->addInfo("messages GET request, terminated");
     return $this->response->withJson($outs);
 });
 
 $app->post('/message', function ($request, $response) {
         global $auth_token;
+        $this->logger->addInfo("message POST request, started");
         $input = $request->getParsedBody();
-        $token = $input['token'];
+        $token = "";
+        if(isset($input['token'])) $token = $input['token'];
         
         $headers = $request->getHeaders();
-        $head_auth_token = trim($headers["HTTP_X_AUTH_TOKEN"][0]);
-        if(empty($token)) {
-            $token = $head_auth_token;
+        # TODO Undefined index: HTTP_X_AUTH_TOKEN
+        if(isset($headers["HTTP_X_AUTH_TOKEN"])) {
+            $head_auth_token = trim($headers["HTTP_X_AUTH_TOKEN"][0]);
+            if(empty($token)) {
+                $token = $head_auth_token;
+            }
         }
         if($token != $auth_token) 
         {
@@ -109,6 +125,7 @@ $app->post('/message', function ($request, $response) {
         $sth->execute();
         $retCnt = $sth->fetchObject();
         echo $retCnt->cnt;
+        $input['retcode'] = 0;
         if( $retCnt->cnt > 0 ) {
             $input['retcode'] = 1;
             $input['error'] = array("code"=>"120","message"=>"Message Already Exists!");
@@ -199,5 +216,6 @@ $app->post('/message', function ($request, $response) {
                 $sth->execute();
             }
         }
+        $this->logger->addInfo("message POST request, terminated");
         return $this->response->withJson($input);
     });
