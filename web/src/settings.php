@@ -18,7 +18,7 @@ return [
         
         // Mysql settings
         "db" => [
-            "host" => "localhost",
+            "host" => "db-mysql",
             "dbname" => "clientsplus",
             "user" => "root",
             "pass" => "root"

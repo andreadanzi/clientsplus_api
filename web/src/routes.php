@@ -20,9 +20,10 @@ $app->get('/try', function ($request, $response, $args) {
     }
     if($token != $auth_token) 
     {
-        throw new InvalidArgumentException('Wrong Auth Token');
+        // throw new InvalidArgumentException('Wrong Auth Token');
+        return $this->response->withStatus(500);
     }
-    $this->logger->addInfo("try GET request, terminated");
+    $this->logger->addInfo("try GET request, terminated");    
     return $this->response->withJson(array("retcode"=>"0", "message"=>"Your test succedeed!"));
 });
 
@@ -43,7 +44,7 @@ $app->get('/messages', function ($request, $response, $args) {
     }
     if($token != $auth_token) 
     {
-        throw new InvalidArgumentException('Wrong Auth Token');
+        return $this->response->withStatus(500);
     }
     $sql = "SELECT idmessage_log, timestamp, hashstring, by_email, when_timestamp, type_event FROM message_log
                                 ORDER BY
@@ -111,7 +112,8 @@ $app->post('/message', function ($request, $response) {
         }
         if($token != $auth_token) 
         {
-            throw new InvalidArgumentException('Wrong Auth Token');
+            // throw new InvalidArgumentException('Wrong Auth Token');
+            return $this->response->withStatus(500);
         }
         $strToHash = $input['when'];
         $strToHash .= $input['type'];

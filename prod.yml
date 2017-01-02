@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  web-frontend:
+    restart: always
+    ports:
+      - 80:80
+
+  web-backend:
+    restart: always
+
+  db-mysql:
+    restart: always
+    ports:
+      - 3306:3306

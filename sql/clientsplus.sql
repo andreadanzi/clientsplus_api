@@ -19,6 +19,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `clientsplus`
 --
+DROP DATABASE IF EXISTS clientsplus;
+
+CREATE DATABASE IF NOT EXISTS clientsplus CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+USE clientsplus;
 
 -- --------------------------------------------------------
 
