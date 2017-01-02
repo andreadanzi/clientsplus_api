@@ -14,6 +14,7 @@ RUN php -r "unlink('composer-setup.php');"
 
 COPY web /var/www/html
 
+RUN composer install -d /var/www/html
 
 RUN rm -rf /var/www/html/logs/* \
     && chown -R www-data:www-data /var/www/html
