@@ -26,7 +26,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - /data/mysq-bridge/datadir:/var/lib/mysql
+      - /data/mysql-bridge/datadir:/var/lib/mysql
 
 networks:
   default:
