@@ -124,7 +124,6 @@ $app->post('/message', function ($request, $response) {
         $sth->bindParam("hs", $hashed);
         $sth->execute();
         $retCnt = $sth->fetchObject();
-        echo $retCnt->cnt;
         $input['retcode'] = 0;
         if( $retCnt->cnt > 0 ) {
             $input['retcode'] = 1;

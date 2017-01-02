@@ -1,15 +1,19 @@
-curl -X GET http://localhost:8888/try?token=AetheiNae0waiy0aeB1angooy5Foh3Th
+#!/bin/bash
+AUTH_TOKEN=AetheiNae0waiy0aeB1angooy5Foh3Th
+CURTIME="$(date +%s)"
+
+curl -X GET http://openon.it:8888/try?token=$AUTH_TOKEN
 # expected return {"retcode":"0","message":"Your test succedeed!"}
 
-curl -H "Content-Type: application/json" -X POST -d '{"token":"AetheiNae0waiy0aeB1angooy5Foh3Th", "by":"andrea.dnz@gmail.com","when":"1480750951","type":"registration","data":{"first_name":"Andrea","last_name":"Danzi","username":"andrea.danzi","company":"DANZI.TN"}}' http://localhost:8888/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"andrea.dnz@gmail.com","when":"'"$CURTIME"'","type":"registration","data":{"first_name":"Andrea","last_name":"Danzi","username":"andrea.danzi","company":"DANZI.TN"}}' http://openon.it:8888/message
 
-curl -H "Content-Type: application/json" -X POST -d '{"token":"AetheiNae0waiy0aeB1angooy5Foh3Th","by":"andrea@danzi.tn.com","when":"1480750999","type":"form_catalogo","data":{"first_name":"Andrea","last_name":"Danzi","username":"andrea.danzi","company":"DANZI.TN"}}' http://localhost:8888/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"andrea@danzi.tn.com","when":"'"$CURTIME"'","type":"form_catalogo","data":{"first_name":"Andrea","last_name":"Danzi","username":"andrea.danzi","company":"DANZI.TN"}}' http://openon.it:8888/message
 
-curl -H "Content-Type: application/json" -X POST -d '{"token":"AetheiNae0waiy0aeB1angooy5Foh3Th","by":"info@danzi.tn.com","when":"1480750999","type":"download","data":{"first_name":"Andrea","last_name":"Danzi","username":"andrea.danzi","company":"DANZI.TN","download":"calcolo_viti.xls"}}' http://localhost:8888/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"info@danzi.tn.com","when":"'"$CURTIME"'","type":"download","data":{"first_name":"Andrea","last_name":"Danzi","username":"andrea.danzi","company":"DANZI.TN","download":"calcolo_viti.xls"}}' http://openon.it:8888/message
 
-curl -H "Content-Type: application/json"  -X POST -d '{"token":"AetheiNae0waiy0aeB1angooy5Foh3Th","by":"info@danzi.tn.com","when":"1480750799","type":"corso","data":{"first_name":"Andrea","last_name":"Danzi","code":"WX012","company":"DANZI.TN","date":"14/05/2017"}}' http://localhost:8888/message
+curl -H "Content-Type: application/json"  -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"info@danzi.tn.com","when":"'"$CURTIME"'","type":"corso","data":{"first_name":"Andrea","last_name":"Danzi","code":"WX012","company":"DANZI.TN","date":"14/05/2017"}}' http://openon.it:8888/message
 
 # con auth token nell'header
-curl -H "Content-Type: application/json"  -H "X-Auth-Token: AetheiNae0waiy0aeB1angooy5Foh3Th"  -X POST -d '{"by":"info@danzi.tn.com","when":"1480750599","type":"corso","data":{"first_name":"Andrea","last_name":"Danzi","code":"WX012","company":"DANZI.TN","date":"14/05/2017"}}' http://localhost:8888/message
+curl -H "Content-Type: application/json"  -H "X-Auth-Token: ${AUTH_TOKEN}" -X POST -d '{"by":"info@danzi.tn.com","when":"'"$CURTIME"'","type":"corso","data":{"first_name":"Andrea","last_name":"Danzi","code":"WX012","company":"DANZI.TN","date":"14/05/2017"}}' http://openon.it:8888/message
 
 
