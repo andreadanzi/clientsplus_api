@@ -12,6 +12,8 @@ RUN php -r "if (hash_file('SHA384', 'composer-setup.php') === '61069fe8c6436a446
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 
+RUN mv composer.phar /usr/local/bin/composer
+
 COPY web /var/www/html
 
 RUN composer install -d /var/www/html
