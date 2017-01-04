@@ -19,9 +19,9 @@ $app->get('/try', function ($request, $response, $args) {
         }
     }
     if($token != $auth_token) 
-    {
-        // throw new InvalidArgumentException('Wrong Auth Token');
-        return $this->response->withStatus(500);
+    { 
+        $resp = $this->response->withStatus(400);
+        return $resp->withJson(array("retcode"=>"1", "message"=>"Wrong or missing Token. Your test failed!"));
     }
     $this->logger->addInfo("try GET request, terminated");    
     return $this->response->withJson(array("retcode"=>"0", "message"=>"Your test succedeed!"));
@@ -44,7 +44,8 @@ $app->get('/messages', function ($request, $response, $args) {
     }
     if($token != $auth_token) 
     {
-        return $this->response->withStatus(500);
+        $resp = $this->response->withStatus(400);
+        return $resp->withJson(array("retcode"=>"1","error" => array("code"=>"250","message"=>"Wrong or Missing Token!") ) );
     }
     $sql = "SELECT idmessage_log, timestamp, hashstring, by_email, when_timestamp, type_event FROM message_log
                                 ORDER BY
@@ -99,7 +100,26 @@ $app->post('/message', function ($request, $response) {
         global $auth_token;
         $this->logger->addInfo("message POST request, started");
         $input = $request->getParsedBody();
+        $input['id'] = 0;
         $token = "";
+        if(!isset($input['when']) ) {
+            $input['retcode'] = 1;
+            $input['error'] = array("code"=>"130","message"=>"when parameter is missing from request!");
+            $resp = $this->response->withStatus(400);
+            return $resp->withJson($input);
+        }
+        if(!isset($input['type'])) {
+            $input['retcode'] = 1;
+            $input['error'] = array("code"=>"140","message"=>"type parameter is missing from request!");
+            $resp = $this->response->withStatus(400);
+            return $resp->withJson($input);
+        }
+        if(!isset($input['by'])) {
+            $input['retcode'] = 1;
+            $input['error'] = array("code"=>"150","message"=>"by parameter is missing from request!");
+            $resp = $this->response->withStatus(400);
+            return $resp->withJson($input);
+        }
         if(isset($input['token'])) $token = $input['token'];
         
         $headers = $request->getHeaders();
@@ -113,7 +133,10 @@ $app->post('/message', function ($request, $response) {
         if($token != $auth_token) 
         {
             // throw new InvalidArgumentException('Wrong Auth Token');
-            return $this->response->withStatus(500);
+            $input['retcode'] = 1;
+            $input['error'] = array("code"=>"250","message"=>"Wrong or Missing Token!");
+            $resp = $this->response->withStatus(400);
+            return $resp->withJson($input);
         }
         $strToHash = $input['when'];
         $strToHash .= $input['type'];
@@ -188,33 +211,35 @@ $app->post('/message', function ($request, $response) {
                     datastructure.event_types_idevent_types = :type_event
                     AND datastructure.name = :key";
             $sthDs = $this->db->prepare($sql);
-            foreach($payload as $key=>$value) {
-                $sthDs->bindParam("type_event", $id_type);
-                $sthDs->bindParam("key", $key);
-                $sthDs->execute();
-                $retObj = $sthDs->fetchObject();
-                $iddatastructure = 0;
-                if(!$retObj) {
-                    $sql = "INSERT INTO datastructure (event_types_idevent_types, name, type) VALUES(:type_event, :key, :datatype)";
+            if(count($payload)) {
+                foreach($payload as $key=>$value) {
+                    $sthDs->bindParam("type_event", $id_type);
+                    $sthDs->bindParam("key", $key);
+                    $sthDs->execute();
+                    $retObj = $sthDs->fetchObject();
+                    $iddatastructure = 0;
+                    if(!$retObj) {
+                        $sql = "INSERT INTO datastructure (event_types_idevent_types, name, type) VALUES(:type_event, :key, :datatype)";
+                        $sth = $this->db->prepare($sql);
+                        $sth->bindParam("type_event",$id_type);
+                        $sth->bindParam("key", $key);
+                        $datatype="string";
+                        $sth->bindParam("datatype", $datatype);
+                        $sth->execute();
+                        $iddatastructure = $this->db->lastInsertId();
+                    } else {
+                        $iddatastructure = $retObj->iddatastructure;
+                    }
+                    $sql = "INSERT INTO message (	message_log_idmessage_log, event_types_idevent_types, email_idemail, datastructure_iddatastructure, datastructure_name, datastructure_value) VALUES(:id_message, :type_event, :by_email, :datastructure, :key, :value)";
                     $sth = $this->db->prepare($sql);
+                    $sth->bindParam("id_message",$input['id']);
                     $sth->bindParam("type_event",$id_type);
+                    $sth->bindParam("by_email", $idemail);
+                    $sth->bindParam("datastructure", $iddatastructure);
                     $sth->bindParam("key", $key);
-                    $datatype="string";
-                    $sth->bindParam("datatype", $datatype);
+                    $sth->bindParam("value", $value);
                     $sth->execute();
-                    $iddatastructure = $this->db->lastInsertId();
-                } else {
-                    $iddatastructure = $retObj->iddatastructure;
                 }
-                $sql = "INSERT INTO message (	message_log_idmessage_log, event_types_idevent_types, email_idemail, datastructure_iddatastructure, datastructure_name, datastructure_value) VALUES(:id_message, :type_event, :by_email, :datastructure, :key, :value)";
-                $sth = $this->db->prepare($sql);
-                $sth->bindParam("id_message",$input['id']);
-                $sth->bindParam("type_event",$id_type);
-                $sth->bindParam("by_email", $idemail);
-                $sth->bindParam("datastructure", $iddatastructure);
-                $sth->bindParam("key", $key);
-                $sth->bindParam("value", $value);
-                $sth->execute();
             }
         }
         $this->logger->addInfo("message POST request, terminated");
