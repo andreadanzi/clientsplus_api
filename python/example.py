@@ -408,7 +408,8 @@ if len(new_courses) > 0:
 if len(emails) == 0:
     exit(0)
 
-sQueryLeads = "SELECT * FROM Leads WHERE email IN ('{0}');".format("','".join(emails.keys()))
+# TODO diverso da un lead con fonte lead  website_course_subscribe
+sQueryLeads = "SELECT * FROM Leads WHERE leadsource != 'website_course_subscribe' AND email  IN ('{0}');".format("','".join(emails.keys()))
 sQueryAccounts = "SELECT * FROM Accounts WHERE email1 IN ('{0}');".format("','".join(emails.keys()))
 sQueryContacts = "SELECT * FROM Contacts WHERE email IN ('{0}');".format("','".join(emails.keys()))
 
