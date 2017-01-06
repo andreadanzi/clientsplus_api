@@ -554,7 +554,7 @@ for keyModule in found:
             retMsgDict, keyType = getMessage(sHost,sPort,sUser,sPass,sDB,idmessage_log)
             # IF COURSE CREATE A NEW LEAD
             if dictMsg["type_event"] == 'course_subscribe':
-                retDict, idmessage_log, timestamp, eventTypeCode = getLastEventByType(sHost,sPort,sUser,sPass,sDB,"registration",dictMsg["email"])
+                retDict, reg_idmessage_log, timestamp, eventTypeCode = getLastEventByType(sHost,sPort,sUser,sPass,sDB,"registration",dictMsg["email"])
                 # MAP FIRST REGISTRATION DATA
                 keyMap = keyLeadMapping[eventTypeCode]
                 elementDict = {"assigned_user_id":dictMsg["assigned_user_id"], "leadsource":"website_{0}".format(dictMsg["type_event"])}
