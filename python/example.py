@@ -120,6 +120,40 @@ sPass = 'root'
 sDB = 'clientsplus'
 
 
+
+def queryVtiger(sURL,gContext, sSessionName, sQuery):
+    values = {}
+    values['sessionName'] = sSessionName
+    values['operation'] = 'query'
+    values['query'] =  sQuery
+    data = urllib.urlencode(values)
+    req = urllib2.Request("%s?%s" % (sURL,data))
+    response = urllib2.urlopen(req,context=gContext)
+    return json.loads(response.read())
+
+
+def createVtiger(sURL,gContext, sSessionName, sElementType, elementDict):
+    values = {}
+    values['sessionName'] = sSessionName
+    values['operation'] = 'create'
+    values['elementType'] =  sElementType
+    values['element'] = json.dumps(elementDict)
+    data = urllib.urlencode(values)
+    req = urllib2.Request(sURL,data)
+    response = urllib2.urlopen(req,context=gContext)
+    return json.loads(response.read())
+
+def updateVtiger(sURL,gContext, sSessionName, sElementType, elementDict):
+    values = {}
+    values['sessionName'] = sSessionName
+    values['operation'] = 'update'
+    values['elementType'] =  sElementType
+    values['element'] = json.dumps(elementDict)
+    data = urllib.urlencode(values)
+    req = urllib2.Request(sURL,data)
+    response = urllib2.urlopen(req,context=gContext)
+    return json.loads(response.read())
+    
 def setMessageLogStatus(host,port, user,password, database,idmessage_log,status):
     cnx = mysql.connector.connect(user=user, password=password,port=port,
                                   host=host,
@@ -134,6 +168,37 @@ def setMessageLogStatus(host,port, user,password, database,idmessage_log,status)
     cnx.commit()
     cursor.close()
     cnx.close()
+
+
+
+def getCourseById(host,port, user,password, database,id_course):
+    cnx = mysql.connector.connect(user=user, password=password,port=port,
+                                  host=host,
+                                  database=database)
+    cursor = cnx.cursor()
+    query = """SELECT 
+                message.datastructure_name,
+                CASE
+                    WHEN message.datastructure_name in ("begins_at","ends_at") THEN from_unixtime(message.datastructure_value)
+                    ELSE message.datastructure_value
+                END AS datastructure_my_value ,
+                event_types.event_type_code,
+                datastructure.*
+                FROM message, datastructure, event_types, message as message_index
+                WHERE
+		message_index.datastructure_name = 'id'
+		AND event_types.event_type_code = 'new_course'
+		AND message_index.datastructure_value = '{0}'
+                AND message.message_log_idmessage_log = message_index.message_log_idmessage_log
+                AND datastructure.iddatastructure = message.datastructure_iddatastructure
+		AND event_types.idevent_types = datastructure.event_types_idevent_types""".format(id_course)
+    cursor.execute(query)
+    retDict = {}
+    for row in cursor:
+        retDict[row[0]] = row[1]
+    cursor.close()
+    cnx.close()
+    return retDict
 
 def getMessage(host,port, user,password, database,idmessage_log):
     cnx = mysql.connector.connect(user=user, password=password,port=port,
@@ -213,7 +278,307 @@ def getLastEventByType(host,port, user,password, database,type_event,by_email):
 
 
 
+
+class MyVtiger:
+    # Vtiger Parameters
+    accessKey = 'BLmHQc0IvDXC665o'
+    vtigerserver = 'https://crmtest.rothoblaas.com/vte'
+    url = '%s/webservice.php' % vtigerserver
+    username = 'webweb'
+    
+    gcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+
+    def __init__(self):
+        ### let's set up the session
+        # get the token using 'getchallenge' operation
+        values = {'operation':'getchallenge','username': self.username }
+        data = urllib.urlencode(values)
+        req = urllib2.Request('%s?%s' % (self.url,data))
+        
+        response = urllib2.urlopen(req,context=self.gcontext).read()
+        token = json.loads(response)['result']['token']
+        
+        # use the token to + accesskey to create the tokenized accessKey
+        key = md5(token + self.accessKey)
+        tokenizedAccessKey = key.hexdigest()
+        values['accessKey'] = tokenizedAccessKey
+        
+        # now that we have an accessKey tokenized, let's perform a login operation 
+        values['operation']  = 'login'
+        data = urllib.urlencode(values)
+        req = urllib2.Request(self.url, data)
+        response = urllib2.urlopen(req,context=self.gcontext)
+        response = json.loads(response.read())
+        print "######## login"
+        if not response["success"]:
+            print "login failed"
+            exit(1)
+        
+        self.userId = response["result"]["userId"]
+        # set the sessionName
+        self.sessionName = response['result']['sessionName']
+
+        self.host = sHost 
+        self.port = sPort        
+        self.user = sUser
+        self.password = sPass
+        self.database = sDB
+    
+
+
+    def queryVtiger(self, sQuery):
+        values = {}
+        values['sessionName'] = self.sessionName
+        values['operation'] = 'query'
+        values['query'] =  sQuery
+        data = urllib.urlencode(values)
+        req = urllib2.Request("%s?%s" % (self.url,data))
+        response = urllib2.urlopen(req,context=self.gcontext)
+        return json.loads(response.read())
+    
+    
+    def createVtiger(self, sElementType, elementDict):
+        values = {}
+        values['sessionName'] = self.sessionName
+        values['operation'] = 'create'
+        values['elementType'] =  sElementType
+        values['element'] = json.dumps(elementDict)
+        data = urllib.urlencode(values)
+        req = urllib2.Request(self.url,data)
+        response = urllib2.urlopen(req,context=self.gcontext)
+        return json.loads(response.read())
+    
+    def updateVtiger(self, sElementType, elementDict):
+        values = {}
+        values['sessionName'] = self.sessionName
+        values['operation'] = 'update'
+        values['elementType'] =  sElementType
+        values['element'] = json.dumps(elementDict)
+        data = urllib.urlencode(values)
+        req = urllib2.Request(self.url,data)
+        response = urllib2.urlopen(req,context=self.gcontext)
+        return json.loads(response.read())    
+    
+    
+    def searchTarget(self,retDict):
+        result = None
+        targetKey = None
+        targetname = None
+        assignedUserId = self.userId
+        cf_1470 = ""
+        cf_1226 = ""
+        cf_1468 = ""
+        cf_1469 = ""
+        cf_1471 = ""
+        refId = "{0}_{1}".format(retDict["type_event"],retDict["idmessage_log"]) 
+        if retDict["type_event"] == "new_course":
+            targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["id"])
+            targetname = "Corso WEB: {0} ({1})".format(retDict["name"], retDict["id"])
+            assignedUserId = "19x1705"
+            targetType = "Iscrizione Corso"
+            cf_1470 = retDict["id"]
+            cf_1226 = retDict["begins_at"]
+            cf_1468 = retDict["ends_at"]
+            cf_1469 = retDict["language"]
+            cf_1471 = retDict["name"]
+        elif retDict["type_event"] == "download":
+            targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["category"])
+            targetType = "Download"
+            targetname = "Download WEB: {0} {1}".format(retDict["type_event"],retDict["category"])
+        elif retDict["type_event"] == "consulting":
+            targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["category"])
+            targetType = "Richiesta Consulenze (Form)"
+            targetname = "Consulenza WEB: {0}".format(retDict["category"])
+        elif retDict["type_event"] == "registration":
+            targetKey =  retDict["type_event"]
+            targetType = "Registrazione WEB"
+            targetname = targetType
+        elif retDict["type_event"] == "newsletter_subscribe":
+            targetKey =  retDict["type_event"]
+            targetType = "Newsletter Subscription WEB"
+            targetname = targetType
+        elif retDict["type_event"] == "newsletter_unsubscribe":
+            targetKey =  retDict["type_event"]
+            targetType = "Newsletter Unsubscription WEB"
+            targetname = targetType
+        elif retDict["type_event"] == "course_subscribe":
+            targetKey =  "new_course_{0}".format(retDict["course_id"])
+            courseDict = getCourseById(self.host,self.port, self.user,self.password, self.database,retDict["course_id"])
+            targetname = "Corso WEB: {0} ({1})".format(courseDict["name"], courseDict["id"])
+            assignedUserId = "19x1705"
+            targetType = "Iscrizione Corso"
+            cf_1470 = courseDict["id"]
+            cf_1226 = courseDict["begins_at"]
+            cf_1468 = courseDict["ends_at"]
+            cf_1469 = courseDict["language"]
+            cf_1471 = courseDict["name"]
+        if targetKey:       
+            sQueryTargets = "SELECT * FROM Targets WHERE cf_1474 = '{0}';".format(targetKey)
+            ret = self.queryVtiger(sQueryTargets)
+            if ret['success']:
+                for item in ret['result']:
+                    result = item
+                if( result ):
+                    print "trovato TARGET {0} {1}".format(result["id"], result["targetname"] )
+                else:
+                    targetDict = {"targetname":targetname,  
+                                   "assigned_user_id":assignedUserId,   
+                                   "target_type" : targetType,  
+                                   "target_state" : "In preparazione" , 
+                                   "cf_1225":"NA",
+                                   "cf_1470":cf_1470, 
+                                   "cf_1226":cf_1226,  
+                                   "cf_1468":cf_1468,
+                                   "cf_1469":cf_1469,
+                                   "cf_1471":cf_1471,
+                                   "cf_1006":targetKey, 
+                                   "cf_1474":targetKey, 
+                                   "cf_1472":refId}
+                    ret = self.createVtiger("Targets", targetDict)
+                    if ret["success"]:
+                        result = ret['result'] 
+                    else:
+                        print "Errore in creazione {0} [{1}] ".format( targetDict, ret)
+            else:
+                print "Errore in ricerca {0} [{1}] ".format( sQueryTargets, ret)
+        return result
+        
+def manage_target_courses(url,gcontext,sessionName,new_courses):
+    # TARGET COURSES
+    if len(new_courses) > 0:    
+        sQueryTargets = "SELECT * FROM Targets WHERE cf_1470 IN ('{0}');".format("','".join(new_courses.keys()))
+        resp = queryVtiger(url,gcontext,sessionName,sQueryTargets)
+        if resp['success']:
+            for item in resp['result']:
+                # print "trovato TARGET {0}".format(item)
+                # cf_1006
+                for courseDict in new_courses[item["cf_1470"]]:
+                    item["targetname"] = "Corso WEB: {0} ({1})".format(courseDict["name"], courseDict["id"])
+                    item["cf_1226"] = courseDict["begins_at"]
+                    item["cf_1468"] = courseDict["ends_at"]
+                    item["cf_1469"] = courseDict["language"]
+                    item["cf_1471"] = courseDict["name"]
+                    item["cf_1006"] = "{0}_{1}".format(courseDict["type_event"],courseDict["id"])
+                    item["cf_1225"] = "NA"
+                    item["cf_1472"] = "{0}_{1}".format(courseDict["type_event"],courseDict["idmessage_log"])
+                    ret = updateVtiger(url,gcontext, sessionName, "Targets", item)
+                    if ret["success"]:
+                        setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],1)
+                    else:
+                        setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],-1)
+                new_courses.pop(item["cf_1470"],None)
+        for key_c in new_courses:
+            course_list = new_courses[key_c]
+            for courseDict in course_list:
+                # TODO aggiugegere codice fatturazione
+                elementDict = {"targetname":"Corso WEB: {0} ({1})".format(courseDict["name"], courseDict["id"]),  
+                               "assigned_user_id":"19x1705",   
+                               "target_type" : "Iscrizione Corso",  
+                               "target_state" : "In preparazione" , 
+                               "cf_1225":"NA",
+                               "cf_1470":courseDict["id"], 
+                               "cf_1226":courseDict["begins_at"],  
+                               "cf_1468":courseDict["ends_at"],
+                               "cf_1469":courseDict["language"],
+                               "cf_1471":courseDict["name"],
+                               "cf_1006":"{0}_{1}".format(courseDict["type_event"],courseDict["id"]), 
+                               "cf_1472":"{0}_{1}".format(courseDict["type_event"],courseDict["idmessage_log"])  }
+                ret = createVtiger(url,gcontext, sessionName, "Targets", elementDict)
+                if ret["success"]:
+                    # print "OK Target per corso creato {0}".format(ret["result"])
+                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],2)
+                else:
+                    # print "errore nella creazione del Target per corsi {0}  - {1}".format(elementDict , ret)
+                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],-2)
+
+
+    
+def manage_target_downloads(url,gcontext,sessionName,dowloads):
+    # TARGET DOWNLOADS
+    if len(dowloads) > 0:    
+        sQueryTargets = "SELECT * FROM Targets WHERE cf_1006 IN ('{0}');".format("','".join(dowloads.keys()))
+        resp = queryVtiger(url,gcontext,sessionName,sQueryTargets)
+        if resp['success']:
+            for item in resp['result']:
+                # print "trovato TARGET {0}".format(item)
+                # cf_1006
+                for dowloadDict in dowloads[item["cf_1006"]]:
+                    item["targetname"] = "Download WEB: {0} ({1})".format(dowloadDict["category"], dowloadDict["description"])                    
+                    item["cf_1471"] = dowloadDict["description"]
+                    item["cf_1006"] = "{0}_{1}".format(dowloadDict["type_event"],dowloadDict["category"])
+                    item["cf_1225"] = "NA"
+                    item["cf_1472"] = "{0}_{1}".format(dowloadDict["type_event"],dowloadDict["idmessage_log"])
+                    ret = updateVtiger(url,gcontext, sessionName, "Targets", item)                    
+                dowloads.pop(item["cf_1006"],None)
+        for key_c in dowloads:
+            course_list = dowloads[key_c]
+            for dowloadDict in course_list:
+                # TODO aggiugegere codice fatturazione
+                elementDict = {"targetname":"Download WEB: {0} ({1})".format(dowloadDict["category"], dowloadDict["description"]),  
+                               "assigned_user_id":"19x1705",   
+                               "target_type" : "Download",  
+                               "target_state" : "In preparazione" , 
+                               "cf_1225":"NA",
+                               "cf_1470":"{0}_{1}".format(dowloadDict["type_event"],dowloadDict["category"]), 
+                               "cf_1471":dowloadDict["description"],
+                               "cf_1006":"{0}_{1}".format(dowloadDict["type_event"],dowloadDict["category"]), 
+                               "cf_1472":"{0}_{1}".format(dowloadDict["type_event"],dowloadDict["idmessage_log"])  }
+                ret = createVtiger(url,gcontext, sessionName, "Targets", elementDict)
+                if ret["success"]:
+                    print "OK Target per download creato {0}".format(ret["result"])
+                else:
+                    print "errore nella creazione del Target per download {0}  - {1}".format(elementDict , ret)
+
+
+
+
+  
 def getMessageLog(host,port, user,password, database):
+    cnx = mysql.connector.connect(user=user, password=password,port=port,
+                                  host=host,
+                                  database=database)
+    cursor = cnx.cursor()
+    query = """SELECT message_log.idmessage_log,
+                      message_log.timestamp, 
+                      event_types.idevent_types ,
+                      message_log.type_event, 
+                      email.idemail,
+                      message_log.by_email, 
+                      email.import_status
+                      FROM message_log 
+                      LEFT JOIN event_types ON event_types.event_type_code = message_log.type_event 
+                      LEFT JOIN email ON email.email_address = message_log.by_email 
+                      WHERE message_log.import_status = 0
+                      ORDER BY message_log.when_timestamp"""
+    cursor.execute(query)    
+    mvt = MyVtiger()       
+    for row in cursor:
+        type_event = row[3] 
+        retDict, eventTypeCode = getMessage(host,port, user,password, database,row[0])
+        retDict["idmessage_log"] = row[0]
+        retDict["email"] = row[5]
+        retDict["timestamp"] = row[1]
+        retDict["type_event"] = type_event  
+        retTargetVal = mvt.searchTarget(retDict) 
+        print retTargetVal
+        if type_event == 'new_course':
+            pass
+        if type_event == 'download':
+            pass
+        if type_event == 'consulting':
+            pass
+        if type_event == 'registration':
+            pass
+        if type_event == 'course_subscribe':
+            pass
+    cursor.close()
+    cnx.close()
+    return True
+
+
+
+
+def getMessageLogs(host,port, user,password, database):
     cnx = mysql.connector.connect(user=user, password=password,port=port,
                                   host=host,
                                   database=database)
@@ -236,65 +601,40 @@ def getMessageLog(host,port, user,password, database):
     not_found_emails = collections.defaultdict(list)
     found = collections.defaultdict(list)
     courses = collections.defaultdict(list)
-    courses_list = []
+    downloads = collections.defaultdict(list)
+    consulting = collections.defaultdict(list)
     for row in cursor:
+        retDict, eventTypeCode = getMessage(host,port, user,password, database,row[0])
+        retDict["idmessage_log"] = row[0]
+        retDict["timestamp"] = row[1]
+        retDict["type_event"] = row[3] 
         if row[3] == 'new_course':
-            courses_list.append(SiteMessage(*row))
-        else:
+            courses[retDict["id"]].append(retDict)      
+        if row[3] == 'download':
+            downloads['download_' + retDict["category"]].append(retDict)  
+        if row[3] == 'consulting':
+            consulting['consulting_' + retDict["category"]].append(retDict)
+        if row[3] != 'new_course':
             emails[row[5]].append(SiteMessage(*row))
             not_found_emails[row[5]].append(SiteMessage(*row))
     cursor.close()
     cnx.close()
-    for course_msg in courses_list:
-        retDict, eventTypeCode = getMessage(host,port, user,password, database,course_msg.idmessage_log)
-        retDict["idmessage_log"] = course_msg.idmessage_log
-        retDict["timestamp"] = course_msg.timestamp
-        retDict["type_event"] = course_msg.type_event
-        courses[retDict["id"]].append(retDict)
-    return emails, not_found_emails, found, courses
+    return emails, not_found_emails, found, courses, downloads, consulting
 
 
 
-emails, not_found_emails, found , new_courses = getMessageLog(sHost,sPort,sUser,sPass,sDB)
+getMessageLog(sHost,sPort,sUser,sPass,sDB)
+
+exit(-1)
 
 
-    
-# Vtiger Parameters
-accessKey = 'BLmHQc0IvDXC665o'
-vtigerserver = 'https://crmtest.rothoblaas.com/vte'
-url = '%s/webservice.php' % vtigerserver
-username = 'webweb'
 
-gcontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+emails, not_found_emails, found , new_courses , downloads, consulting = getMessageLogs(sHost,sPort,sUser,sPass,sDB)
 
-### let's set up the session
-# get the token using 'getchallenge' operation
-values = {'operation':'getchallenge','username': username }
-data = urllib.urlencode(values)
-req = urllib2.Request('%s?%s' % (url,data))
 
-response = urllib2.urlopen(req,context=gcontext).read()
-token = json.loads(response)['result']['token']
 
-# use the token to + accesskey to create the tokenized accessKey
-key = md5(token + accessKey)
-tokenizedAccessKey = key.hexdigest()
-values['accessKey'] = tokenizedAccessKey
-
-# now that we have an accessKey tokenized, let's perform a login operation 
-values['operation']  = 'login'
-data = urllib.urlencode(values)
-req = urllib2.Request(url, data)
-response = urllib2.urlopen(req,context=gcontext)
-response = json.loads(response.read())
-print "######## login"
-if not response["success"]:
-    print "login failed"
-    exit(1)
-
-userId = response["result"]["userId"]
-# set the sessionName
-sessionName = response['result']['sessionName']
+manage_target_courses(url,gcontext,sessionName,new_courses)
+manage_target_downloads(url,gcontext,sessionName,downloads)
 
 """
 values['sessionName'] = sessionName
@@ -325,84 +665,6 @@ print json.loads(response.read())
 exit()
 """
 
-
-def queryVtiger(sURL,gContext, sSessionName, sQuery):
-    values = {}
-    values['sessionName'] = sSessionName
-    values['operation'] = 'query'
-    values['query'] =  sQuery
-    data = urllib.urlencode(values)
-    req = urllib2.Request("%s?%s" % (sURL,data))
-    response = urllib2.urlopen(req,context=gContext)
-    return json.loads(response.read())
-
-
-def createVtiger(sURL,gContext, sSessionName, sElementType, elementDict):
-    values = {}
-    values['sessionName'] = sSessionName
-    values['operation'] = 'create'
-    values['elementType'] =  sElementType
-    values['element'] = json.dumps(elementDict)
-    data = urllib.urlencode(values)
-    req = urllib2.Request(sURL,data)
-    response = urllib2.urlopen(req,context=gContext)
-    return json.loads(response.read())
-
-def updateVtiger(sURL,gContext, sSessionName, sElementType, elementDict):
-    values = {}
-    values['sessionName'] = sSessionName
-    values['operation'] = 'update'
-    values['elementType'] =  sElementType
-    values['element'] = json.dumps(elementDict)
-    data = urllib.urlencode(values)
-    req = urllib2.Request(sURL,data)
-    response = urllib2.urlopen(req,context=gContext)
-    return json.loads(response.read())
-
-# TARGET COURSES
-if len(new_courses) > 0:    
-    sQueryTargets = "SELECT * FROM Targets WHERE cf_1470 IN ('{0}');".format("','".join(new_courses.keys()))
-    print sQueryTargets
-    resp = queryVtiger(url,gcontext,sessionName,sQueryTargets)
-    if resp['success']:
-        for item in resp['result']:
-            # print "trovato TARGET {0}".format(item)
-            for courseDict in new_courses[item["cf_1470"]]:
-                item["targetname"] = "Corso WEB: {0} ({1})".format(courseDict["name"], courseDict["id"])
-                item["cf_1226"] = courseDict["begins_at"]
-                item["cf_1468"] = courseDict["ends_at"]
-                item["cf_1469"] = courseDict["language"]
-                item["cf_1471"] = courseDict["name"]
-                item["cf_1225"] = "NA"
-                item["cf_1472"] = "{0}_{1}".format(courseDict["type_event"],courseDict["idmessage_log"])
-                ret = updateVtiger(url,gcontext, sessionName, "Targets", item)
-                if ret["success"]:
-                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],1)
-                else:
-                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],-1)
-            new_courses.pop(item["cf_1470"],None)
-    for key_c in new_courses:
-        course_list = new_courses[key_c]
-        for courseDict in course_list:
-            # TODO aggiugegere codice fatturazione
-            elementDict = {"targetname":"Corso WEB: {0} ({1})".format(courseDict["name"], courseDict["id"]),  
-                           "assigned_user_id":"19x1705",   
-                           "target_type" : "Iscrizione Corso",  
-                           "target_state" : "Pronto" , 
-                           "cf_1225":"NA",
-                           "cf_1470":courseDict["id"], 
-                           "cf_1226":courseDict["begins_at"],  
-                           "cf_1468":courseDict["ends_at"],
-                           "cf_1469":courseDict["language"],
-                           "cf_1471":courseDict["name"],
-                           "cf_1472":"{0}_{1}".format(courseDict["type_event"],courseDict["idmessage_log"])  }
-            ret = createVtiger(url,gcontext, sessionName, "Targets", elementDict)
-            if ret["success"]:
-                # print "OK Target per corso creato {0}".format(ret["result"])
-                setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],2)
-            else:
-                # print "errore nella creazione del Target per corsi {0}  - {1}".format(elementDict , ret)
-                setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,courseDict["idmessage_log"],-2)
 
 
 if len(emails) == 0:
@@ -511,15 +773,15 @@ for email in not_found_emails:
                     if ret["success"]:
                         sId = ret["result"]["id"]
                         leadDict = ret["result"]
-                        created[email] = sId               
+                        created[email] = sId
                         """
                         dictMsg["id"] = sId
                         dictMsg["company"] = ret["result"]["company"]
                         dictMsg["newsletter_permission"] = ret["result"]["newsletter_permission"]
                         dictMsg["lastname"] = ret["result"]["lastname"]
                         dictMsg["firstname"] = ret["result"]["firstname"]
-                        found["Leads"].append(dictMsg)
-                        """                    
+                        found["Leads"].append(dictMsg)         
+                        """
                         setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,message.idmessage_log,1)
                         bInsertedLead = True
                     else:
@@ -537,6 +799,7 @@ for email in not_found_emails:
                                 "time_end":duedate.strftime('%H:%M'),
                                 "eventstatus":"Held",
                                 "description":json.dumps(retDict),
+                                "cf_1473": "{0}_{1}".format(message.type_event, retDict["course_id"]),
                                 "cf_1467": "{0}_{1}".format(message.type_event, message.idmessage_log)
                                 }
                 ret = createVtiger(url,gcontext, sessionName, "Events", eventDict)
@@ -572,9 +835,9 @@ for keyModule in found:
                         elementDict[keyMap[key]] = retMsgDict[key]
                 ret = createVtiger(url,gcontext, sessionName, "Leads", elementDict)
                 if ret["success"]:            
-                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,1)
+                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,3)
                 else:
-                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,-1)                        
+                    setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,-3)                        
             print "Processing event for {0} id {1} ({2})".format(keyModule,sId, idmessage_log)
             duedate = dictMsg["timestamp"] + datetime.timedelta(hours=1)
             eventDict = { 
@@ -588,13 +851,14 @@ for keyModule in found:
                             "time_end":duedate.strftime('%H:%M'),
                             "eventstatus":"Held",
                             "description":json.dumps(retMsgDict),
+                            "cf_1473": "{0}_{1}".format(dictMsg["type_event"], retMsgDict["course_id"]),
                             "cf_1467": "{0}_{1}".format(dictMsg["type_event"], idmessage_log)
                             }
             ret = createVtiger(url,gcontext, sessionName, "Events", eventDict)            
             if ret["success"]:
                 sEventId = ret["result"]["id"]
-                setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,2)
+                setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,4)
             else:
                 print "\t\t\t" , ret
-                setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,-2)
+                setMessageLogStatus(sHost,sPort,sUser,sPass,sDB,idmessage_log,-4)
         

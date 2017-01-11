@@ -35,36 +35,48 @@ echo "########################################"
 echo "registration example"
 # registration example
 curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.rossi@example.com","when":"'"$CURTIME"'","type":"registration","data":{"first_name": "Mario","last_name": "Rossi","language": "IT","tel": "+391234567890","job": "engineer","company": "Mario Rossi Engineering","address": "Piazza del Popolo 11","city": "Roma","region": "IT-62","country": "IT","zip": "12345"}}' $URL/message
+sleep 2
+CURTIME="$(date +%s)"
 echo
 echo "########################################"
 echo "newsletter_subscribe example"
 # newsletter_subscribe example NEW USER
 curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.rossi@example.com","when":"'"$CURTIME"'","type":"newsletter_subscribe","data":{"first_name": "Mario","last_name": "Rossi","language": "IT"}}' $URL/message
+sleep 2
+CURTIME="$(date +%s)"
 echo
 echo "########################################"
 echo "newsletter_subscribe example"
 # newsletter_subscribe example REGISTERED USER
-curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"maria.rossi@example.com","when":"'"$CURTIME"'","type":"newsletter_subscribe"}' $URL/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.rossi@example.com","when":"'"$CURTIME"'","type":"newsletter_subscribe"}' $URL/message
+sleep 2
+CURTIME="$(date +%s)"
 echo
 echo "########################################"
 echo "newsletter_unsubscribe example"
 # newsletter_subscribe example REGISTERED USER
 curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.rossi@example.com","when":"'"$CURTIME"'","type":"newsletter_unsubscribe"}' $URL/message
+sleep 2
+CURTIME="$(date +%s)"
+echo
+echo "########################################"
+echo "registration example"
+# registration example
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.bianchi@example.com","when":"'"$CURTIME"'","type":"registration","data":{"first_name": "Mario","last_name": "Rossi","language": "IT","tel": "+391234567890","job": "engineer","company": "Mario Bianchi Engineering","address": "Piazza del Popolo 11","city": "Roma","region": "IT-62","country": "IT","zip": "12345"}}' $URL/message
+sleep 2
+CURTIME="$(date +%s)"
 echo
 echo "########################################"
 echo "consulting example"
 # consulting example
-curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.bianchi@example.com","when":"'"$CURTIME"'","type":"consulting","data":{"first_name": "Mario","last_name": "Rossi","language": "IT","tel": "+391234567890","job": "engineer","company": "Mario Rossi Engineering","address": "Piazza del Popolo 11","city": "Roma","region": "IT-62","country": "IT","zip": "12345","category": "fixing","description": "Testo della richiesta di consulenza"}}' $URL/message
-echo
-echo "########################################"
-echo "form request example"
-# form request example
-curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"andrea@danzi.tn.com","when":"'"$CURTIME"'","type":"form_catalogo","data":{"first_name":"Andrea","last_name":"Danzi","username":"andrea.danzi","company":"DANZI.TN"}}' $URL/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.bianchi@example.com","when":"'"$CURTIME"'","type":"consulting","data":{"category": "fixing","description": "Testo della richiesta di consulenza"}}' $URL/message
+sleep 2
+CURTIME="$(date +%s)"
 echo
 echo "########################################"
 echo "download example"
 # download example
-curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"email@danzi.tn.com","when":"'"$CURTIME"'","type":"download","data":{"category":"software","description": "MyProject 1.3","filename":"calcolo_viti.xls"}}' $URL/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"mario.rossi@example.com","when":"'"$CURTIME"'","type":"download","data":{"category":"software","description": "MyProject 1.3","filename":"calcolo_viti.xls"}}' $URL/message
 echo
 echo "########################################"
 echo "new_course example"
@@ -74,18 +86,18 @@ echo
 echo "########################################"
 echo "course_subscribe example"
 # course_subscribe
-curl -H "Content-Type: application/json"  -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"pippo@pluto.com","when":"'"$CURTIME"'","type":"course_subscribe","data":{"course_id":45,"plan": "course_only","intolerances": "gluten","overnight_stay": "none"}}' $URL/message
+curl -H "Content-Type: application/json"  -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"mario.rossi@example.com","when":"'"$CURTIME"'","type":"course_subscribe","data":{"course_id":45,"plan": "course_only","intolerances": "gluten","overnight_stay": "none"}}' $URL/message
 echo
 echo "########################################"
 echo "course example with error"
 # course example, same message as previous, error expected!
-curl -H "Content-Type: application/json"  -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"pippo@pluto.com","when":"'"$CURTIME"'","type":"course_subscribe","data":{"course_id":45,"plan": "course_only","intolerances": "gluten","overnight_stay": "none"}}' $URL/message
+curl -H "Content-Type: application/json"  -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"mario.rossi@example.com","when":"'"$CURTIME"'","type":"course_subscribe","data":{"course_id":45,"plan": "course_only","intolerances": "gluten","overnight_stay": "none"}}' $URL/message
 echo
 echo "########################################"
 echo "course example with auth token inside the header"
 CURTIME="$(date +%s)"
 # course example auth token inside the header
-curl -H "Content-Type: application/json"  -H "X-Auth-Token: ${AUTH_TOKEN}" -X POST -d '{"by":"paperino@paperopoli.com","when":"'"$CURTIME"'","type":"course_subscribe","data":{"course_id":45,"plan": "course_only","intolerances": "gluten","overnight_stay": "none"}}' $URL/message
+curl -H "Content-Type: application/json"  -H "X-Auth-Token: ${AUTH_TOKEN}" -X POST -d '{"by":"mario.bianchi@example.com","when":"'"$CURTIME"'","type":"course_subscribe","data":{"course_id":45,"plan": "course_only","intolerances": "gluten","overnight_stay": "none"}}' $URL/message
 echo
 echo "########################################"
 echo "registration example with error: wrong token"
@@ -105,4 +117,4 @@ echo
 echo "########################################"
 echo "download example with error: missing required parameter type" 
 # download example with error: missing required parameter type
-curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"email@danzi.tn.com","when":"'"$CURTIME"'","data":{"category":"software","description": "MyProject 1.3","filename":"calcolo_viti.xls"}}' $URL/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'","by":"mario.bianchi@example.com","when":"'"$CURTIME"'","data":{"category":"software","description": "MyProject 1.3","filename":"calcolo_viti.xls"}}' $URL/message
