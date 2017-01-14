@@ -1,0 +1,17 @@
+# verificare mapping cf_
+OK
+# aggiungere nuovi lead source e nuovi tipi target con traduzione
+website_event_type_code
+website_registration
+website_download
+website_newsletter_subscribe
+website_consulting
+website_new_course
+website_course_subscribe
+website_newsletter_unsubscribe
+# Manca tutta gestione corsi 
+Scelta pernotto 
+Modalità di partecipazione cf_732
+Titolo Corso cf_726 - ok
+Data Corso cf_733 - ok
+Codice Fatturazione cf_756 - ok

@@ -24,8 +24,8 @@
 AUTH_TOKEN=AetheiNae0waiy0aeB1angooy5Foh3Th
 WRONG_AUTH_TOKEN=wrongtoken1345687
 CURTIME="$(date +%s)"
-# URL=https://crmtest.rothoblaas.com/api
-URL=http://localhost:8888
+URL=https://crmtest.rothoblaas.com/api
+
 
 # test connection
 curl -X GET $URL/try?token=$AUTH_TOKEN
@@ -62,7 +62,7 @@ echo
 echo "########################################"
 echo "registration example"
 # registration example
-curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.bianchi@example.com","when":"'"$CURTIME"'","type":"registration","data":{"first_name": "Mario","last_name": "Rossi","language": "IT","tel": "+391234567890","job": "engineer","company": "Mario Bianchi Engineering","address": "Piazza del Popolo 11","city": "Roma","region": "IT-62","country": "IT","zip": "12345"}}' $URL/message
+curl -H "Content-Type: application/json" -X POST -d '{"token":"'"$AUTH_TOKEN"'", "by":"mario.bianchi@example.com","when":"'"$CURTIME"'","type":"registration","data":{"first_name": "Mario","last_name": "Bianchi","language": "IT","tel": "+391234567890","job": "engineer","company": "Mario Bianchi Engineering","address": "Piazza del Popolo 11","city": "Roma","region": "IT-62","country": "IT","zip": "12345"}}' $URL/message
 sleep 2
 CURTIME="$(date +%s)"
 echo
