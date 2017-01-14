@@ -15,9 +15,10 @@ services:
     build:
       context: .
       dockerfile: ./docker/web/backend/Dockerfile
+    volumes:
+      - /data/backend-bridge/datadir:/data_backend:rw
     depends_on:
       - db-mysql
-
   
   db-mysql:
     image: mysql

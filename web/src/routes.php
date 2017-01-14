@@ -122,6 +122,7 @@ $app->post('/message', function ($request, $response) {
         }
         if(isset($input['token'])) $token = $input['token'];
         
+        $this->logger->addInfo("message ok!");
         $headers = $request->getHeaders();
         # TODO Undefined index: HTTP_X_AUTH_TOKEN
         if(isset($headers["HTTP_X_AUTH_TOKEN"])) {
@@ -151,6 +152,7 @@ $app->post('/message', function ($request, $response) {
         $retCnt = $sth->fetchObject();
         $input['retcode'] = 0;
         if( $retCnt->cnt > 0 ) {
+            $this->logger->addInfo("message_log already exists!");
             $input['retcode'] = 1;
             $input['error'] = array("code"=>"120","message"=>"Message Already Exists!");
         } else {
@@ -162,6 +164,7 @@ $app->post('/message', function ($request, $response) {
             $sth->bindParam("hashstring",$hashed);
             $sth->execute();
             $input['id'] = $this->db->lastInsertId();
+            $this->logger->addInfo("new message_log id = " . $input["id"]);
             // check type
             $sql = "SELECT 
                     *
@@ -181,8 +184,10 @@ $app->post('/message', function ($request, $response) {
                 $sth->bindParam("when_timestamp", $input['when']);
                 $sth->execute();
                 $id_type = $this->db->lastInsertId();
+            	$this->logger->addInfo("new type id = " . $id_type);
             } else {
                 $id_type = $retObj->idevent_types;
+            	$this->logger->addInfo("existing type id = " . $id_type);
             }
             // check email
             $sql = "SELECT *
@@ -201,8 +206,10 @@ $app->post('/message', function ($request, $response) {
                 $sth->bindParam("when_timestamp", $input['when']);
                 $sth->execute();
                 $idemail = $this->db->lastInsertId();
+            	$this->logger->addInfo("new email id = " . $idemail);
             } else {
                 $idemail = $retObj->idemail;
+            	$this->logger->addInfo("existing email id = " . $idemail);
             }
             // check payload
             $sql = "SELECT *
@@ -212,7 +219,26 @@ $app->post('/message', function ($request, $response) {
                     AND datastructure.name = :key";
             $sthDs = $this->db->prepare($sql);
             if(count($payload)) {
+                $this->logger->addInfo("Payload available with " .count($payload). " items");
                 foreach($payload as $key=>$value) {
+                    if($key=='file') {
+                        $filename = "";
+                        $this->logger->addInfo("POST request contain file parameter");
+                        if(empty($value)) {
+                            $this->logger->addInfo("Uploaded file is empty");
+                        } else {
+                            $this->logger->addInfo("Uploaded file is NOT empty (".count($value).")");
+                            list($type, $data) = explode(';', $value);
+                            list(, $data)      = explode(',', $data);
+                            $data = base64_decode($data);
+                            $this->logger->addInfo("type is ". $type);
+                            list($pre, $ext) = explode('/',$type);
+                            $filename = "uploaded_".$input['type']."-".$input['when'].".".$ext;
+                            $this->logger->addInfo("Uploaded file name is " . $filename);
+                            file_put_contents("/data_backend/".$filename, $data);
+                        }
+                        $value = $filename;
+                    }
                     $sthDs->bindParam("type_event", $id_type);
                     $sthDs->bindParam("key", $key);
                     $sthDs->execute();
