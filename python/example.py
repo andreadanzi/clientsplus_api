@@ -351,6 +351,16 @@ class MyVtiger:
         response = urllib2.urlopen(req,context=self.gcontext)
         return json.loads(response.read())
     
+    def createLinks(self, elementListDict):
+        values = {}
+        values['sessionName'] = self.sessionName
+        values['operation'] = 'link_entities'
+        values['entityrel_list'] = json.dumps(elementListDict)
+        data = urllib.urlencode(values)
+        req = urllib2.Request(self.url,data)
+        response = urllib2.urlopen(req,context=self.gcontext)
+        return json.loads(response.read())
+        
     def updateVtiger(self, sElementType, elementDict):
         values = {}
         values['sessionName'] = self.sessionName
@@ -380,7 +390,7 @@ class MyVtiger:
                         "time_end":duedate.strftime('%H:%M'),
                         "eventstatus":"Held",
                         "description":sDescr,
-                        "cf_1547": "{0}_{1}".format(retDict["type_event"], retDict["idmessage_log"])
+                        "cf_1547": retDict["targetKey"]
                         }
         if retDict["type_event"] == "consulting":
             eventDict["subject"] = "{0} ({1})".format(eventDict["subject"],retDict["category"])
@@ -540,7 +550,7 @@ class MyVtiger:
                             print "Errore in creazione {0} [{1}] ".format( targetDict, ret)
                 else:
                     print "Errore in ricerca {0} [{1}] ".format( sQueryTargets, ret)
-        return result
+        return targetKey, result
 
 def getMessageLog(host,port, user,password, database):
     cnx = mysql.connector.connect(user=user, password=password,port=port,
@@ -561,6 +571,7 @@ def getMessageLog(host,port, user,password, database):
                       ORDER BY message_log.when_timestamp"""
     cursor.execute(query)    
     mvt = MyVtiger()
+    elementListDict = {}
     for row in cursor:
         type_event = row[3] 
         retDict, eventTypeCode = getMessage(host,port, user,password, database,row[0])
@@ -569,12 +580,22 @@ def getMessageLog(host,port, user,password, database):
         retDict["email"] = row[5]
         retDict["timestamp"] = row[1]
         retDict["type_event"] = type_event  
-        retTargetVal = mvt.searchTarget(retDict) 
+        targetKey, retTargetVal = mvt.searchTarget(retDict)
+        retDict["targetKey"] = targetKey
         retEntityList = mvt.processEmail(retDict)
+        """
+        $relentity["crmid"];
+        $relentity["module"];
+        $relentity["relcrmid"];
+        $relentity["relmodule"];
+        """
         bNewLead = False
+        iNum = 0
         for entityItem in retEntityList:
             retEvent = mvt.addEventToEntity(retDict, entityItem[1] )
             bNewLead = entityItem[2]
+            elementListDict[iNum] = {"crmid":retTargetVal["id"],"relcrmid":entityItem[1]["id"]}
+            iNum += 1
         if type_event == 'registration':
             pass
         if type_event == 'new_course':
@@ -605,6 +626,7 @@ def getMessageLog(host,port, user,password, database):
                 print "Errore in creazione Lead {0} [{1}] ".format( elementDict, retLead)
     cursor.close()
     cnx.close()
+    # mvt.createLinks(elementListDict)
     return True
 
 getMessageLog(sHost,sPort,sUser,sPass,sDB)
