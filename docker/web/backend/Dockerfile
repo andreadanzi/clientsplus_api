@@ -22,10 +22,6 @@ RUN mv composer.phar /usr/local/bin/composer
 
 COPY web /var/www/html
 
-COPY docker/web/backend/entrypoint.sh /entrypoint.sh
-
-RUN chmod +x /entrypoint.sh
-
 RUN composer install -d /var/www/html
 
 RUN rm -rf /var/www/html/logs/* \
