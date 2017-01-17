@@ -174,9 +174,9 @@ def updateVtiger(sURL,gContext, sSessionName, sElementType, elementDict):
     return json.loads(response.read())
     
 def setMessageLogStatus(host,port, user,password, database,idmessage_log,status):
-    cnx = MySQLdb.connect(user=user, password=password,port=int(port),
+    cnx = MySQLdb.connect(user=user, passwd=password,port=int(port),
                                   host=host,
-                                  database=database)
+                                  db=database)
     cursor = cnx.cursor()
     query = """UPDATE message_log
                 SET import_status = {1}
@@ -191,9 +191,9 @@ def setMessageLogStatus(host,port, user,password, database,idmessage_log,status)
 
 
 def getCourseById(host,port, user,password, database,id_course):
-    cnx = MySQLdb.connect(user=user, password=password,port=int(port),
+    cnx = MySQLdb.connect(user=user, passwd=password,port=int(port),
                                   host=host,
-                                  database=database)
+                                  db=database)
     cursor = cnx.cursor()
     query = """SELECT 
                 message.datastructure_name,
@@ -220,9 +220,9 @@ def getCourseById(host,port, user,password, database,id_course):
     return retDict
 
 def getMessage(host,port, user,password, database,idmessage_log):
-    cnx = MySQLdb.connect(user=user, password=password,port=int(port),
+    cnx = MySQLdb.connect(user=user, passwd=password,port=int(port),
                                   host=host,
-                                  database=database)
+                                  db=database)
     cursor = cnx.cursor()
     query = """SELECT 
                 message.datastructure_name,
@@ -248,9 +248,9 @@ def getMessage(host,port, user,password, database,idmessage_log):
     return retDict, eventTypeCode
 
 def getLastEventByType(host,port, user,password, database,type_event,by_email):
-    cnx = MySQLdb.connect(user=user, password=password,port=int(port),
+    cnx = MySQLdb.connect(user=user, passwd=password,port=int(port),
                                   host=host,
-                                  database=database)
+                                  db=database)
     cursor = cnx.cursor()
     query = """SELECT
                         max(message_log.idmessage_log),
@@ -598,9 +598,9 @@ class MyVtiger:
         return targetKey, result
 
 def getMessageLog(host,port, user,password, database):
-    cnx = MySQLdb.connect(user=user, password=password,port=int(port),
+    cnx = MySQLdb.connect(user=user, passwd=password,port=int(port),
                                   host=host,
-                                  database=database)
+                                  db=database)
     cursor = cnx.cursor()
     query = """SELECT message_log.idmessage_log,
                       message_log.timestamp, 
