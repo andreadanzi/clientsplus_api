@@ -174,7 +174,7 @@ def updateVtiger(sURL,gContext, sSessionName, sElementType, elementDict):
     return json.loads(response.read())
     
 def setMessageLogStatus(host,port, user,password, database,idmessage_log,status):
-    cnx = mysql.connector.connect(user=user, password=password,port=port,
+    cnx = MySQLdb.connect(user=user, password=password,port=port,
                                   host=host,
                                   database=database)
     cursor = cnx.cursor()
@@ -191,7 +191,7 @@ def setMessageLogStatus(host,port, user,password, database,idmessage_log,status)
 
 
 def getCourseById(host,port, user,password, database,id_course):
-    cnx = mysql.connector.connect(user=user, password=password,port=port,
+    cnx = MySQLdb.connect(user=user, password=password,port=port,
                                   host=host,
                                   database=database)
     cursor = cnx.cursor()
@@ -220,7 +220,7 @@ def getCourseById(host,port, user,password, database,id_course):
     return retDict
 
 def getMessage(host,port, user,password, database,idmessage_log):
-    cnx = mysql.connector.connect(user=user, password=password,port=port,
+    cnx = MySQLdb.connect(user=user, password=password,port=port,
                                   host=host,
                                   database=database)
     cursor = cnx.cursor()
@@ -248,7 +248,7 @@ def getMessage(host,port, user,password, database,idmessage_log):
     return retDict, eventTypeCode
 
 def getLastEventByType(host,port, user,password, database,type_event,by_email):
-    cnx = mysql.connector.connect(user=user, password=password,port=port,
+    cnx = MySQLdb.connect(user=user, password=password,port=port,
                                   host=host,
                                   database=database)
     cursor = cnx.cursor()
@@ -598,7 +598,7 @@ class MyVtiger:
         return targetKey, result
 
 def getMessageLog(host,port, user,password, database):
-    cnx = mysql.connector.connect(user=user, password=password,port=port,
+    cnx = MySQLdb.connect(user=user, password=password,port=port,
                                   host=host,
                                   database=database)
     cursor = cnx.cursor()
@@ -700,7 +700,4 @@ def hyper_task():
     getMessageLog(sHost,sPort,sUser,sPass,sDB)
     log.info("loop terminated")
 
-
-lc = LoopingCall(hyper_task)
-lc.start(60*60*4)
-reactor.run()
+hyper_task()
