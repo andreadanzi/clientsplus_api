@@ -11,10 +11,6 @@ from hashlib import md5
 import logging
 import logging.handlers
 
-from datetime import datetime
-from twisted.internet.task import LoopingCall
-from twisted.internet import reactor
-
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 file_handler = logging.handlers.RotatingFileHandler("{0}.log".format(os.path.basename(__file__).split(".")[0]), maxBytes=5000000,backupCount=5)
