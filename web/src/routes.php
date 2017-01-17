@@ -152,9 +152,9 @@ $app->post('/message', function ($request, $response) {
         $retCnt = $sth->fetchObject();
         $input['retcode'] = 0;
         if( $retCnt->cnt > 0 ) {
-            $this->logger->addInfo("message_log already exists!");
+            $this->logger->addInfo("message_log already exists! when = ".$input['when']. " type = ". $input['by'] . " by = " .$input['by']);
             $input['retcode'] = 1;
-            $input['error'] = array("code"=>"120","message"=>"Message Already Exists!");
+            $input['error'] = array("code"=>"120","message"=>"Message Already Exists! Params are when = ".$input['when']. " type = ". $input['by'] . " by = " .$input['by']);
         } else {
             $sql = "INSERT INTO message_log (when_timestamp,type_event,by_email,hashstring, import_status, import_date, timestamp ) VALUES (:when_timestamp,:type_event,:by_email,:hashstring, 0, NOW(), from_unixtime(:when_timestamp))";
             $sth = $this->db->prepare($sql);
