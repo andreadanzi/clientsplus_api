@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# danzi.tn@20170117 gestione Consulenze e link Target
+import os
 import mysql.connector
 import urllib2,ssl
 import json
@@ -6,7 +8,19 @@ import urllib
 import collections
 import datetime
 from hashlib import md5
+import logging
+import logging.handlers
 
+
+log = logging.getLogger()
+log.setLevel(logging.DEBUG)
+file_handler = logging.handlers.RotatingFileHandler("{0}.log".format(os.path.basename(__file__).split(".")[0]), maxBytes=5000000,backupCount=5)
+file_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+file_handler.setFormatter(formatter)
+log.addHandler(file_handler)
+
+log.info("starting....")
 # "email":"pippo@pippo.com", "lastname":"bello", "firstname":"pippo", "newsletter_permission":1, "company":"example", "assigned_user_id":userId}
 # {u'city': u'Roma', u'first_name': u'Mario', u'last_name': u'Rossi', u'tel': u'+391234567890', u'zip': u'12345', u'language': u'IT', u'country': u'IT', u'company': u'Mario Rossi Engineering', u'job': u'engineer', u'address': u'Piazza del Popolo 11', u'region': u'IT-62'}
 keySubjects = {
@@ -88,6 +102,9 @@ keyLeadMapping = {"registration": {
                                     "id":"company",
                                     "language":"firstname",
                                     "name":"lastname"
+                                    },
+                     "download": {
+                                    "description":"description"
                                     }
                   }
 
@@ -312,12 +329,13 @@ class MyVtiger:
         req = urllib2.Request(self.url, data)
         response = urllib2.urlopen(req,context=self.gcontext)
         response = json.loads(response.read())
-        print "######## login"
+        log.info(  "######## login as {0} ".format(self.username) )
         if not response["success"]:
-            print "login failed"
+            log.error( "login failed" )
             exit(1)
         
         self.userId = response["result"]["userId"]
+        log.debug(  "\tuser id = {0} ".format(self.userId) )
         # set the sessionName
         self.sessionName = response['result']['sessionName']
 
@@ -355,7 +373,7 @@ class MyVtiger:
         values = {}
         values['sessionName'] = self.sessionName
         values['operation'] = 'link_entities'
-        values['entityrel_list'] = json.dumps(elementListDict)
+        values['element'] = json.dumps(elementListDict)
         data = urllib.urlencode(values)
         req = urllib2.Request(self.url,data)
         response = urllib2.urlopen(req,context=self.gcontext)
@@ -373,7 +391,7 @@ class MyVtiger:
         return json.loads(response.read())    
     
     
-    def addEventToEntity(self,retDict, entityItem ):
+    def addEventToEntity(self,retDict, entityItem, entityType ):
         result = None
         duedate = retDict["timestamp"] + datetime.timedelta(hours=1)
         sDescr = ""
@@ -381,19 +399,27 @@ class MyVtiger:
             sDescr = retDict["description"]
         eventDict = { 
                         "assigned_user_id":entityItem["assigned_user_id"], 
-                        "parent_id" : entityItem["id"],
                         "activitytype":"website_{0}".format(retDict["type_event"]), 
                         "subject":keySubjects[retDict["type_event"]].format(retDict["email"]),
-                        "date_start":retDict["timestamp"].strftime('%d-%m-%Y'),
+                        "date_start":retDict["timestamp"].strftime('%Y-%m-%d'),
                         "time_start":retDict["timestamp"].strftime('%H:%M'),
-                        "due_date":duedate.strftime('%d-%m-%Y'),
+                        "due_date":duedate.strftime('%Y-%m-%d'),
                         "time_end":duedate.strftime('%H:%M'),
                         "eventstatus":"Held",
                         "description":sDescr,
                         "cf_1547": retDict["targetKey"]
                         }
+        if entityType =='Contacts':
+            eventDict["contact_id"] = entityItem["id"]
+            if "account_id" in entityItem:
+                eventDict["parent_id"] = entityItem["account_id"]
+        else:
+            eventDict["parent_id"] = entityItem["id"]
+        
         if retDict["type_event"] == "consulting":
             eventDict["subject"] = "{0} ({1})".format(eventDict["subject"],retDict["category"])
+            if "file" in retDict:
+                eventDict["description"] = "{0}\n[{1}]".format(eventDict["description"],retDict["file"])
         if retDict["type_event"] == "course_subscribe":
             eventDict["subject"] = "{0} ({1})".format(eventDict["subject"],retDict["course_id"])
         if retDict["type_event"] == "new_course":
@@ -403,6 +429,8 @@ class MyVtiger:
             setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],3)
             result = ret["result"]
         else:
+            log.error(  "Error on create event {0}".format(ret) )
+            
             setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-5)
         return result
     
@@ -419,9 +447,9 @@ class MyVtiger:
             if ret['success']:
                 for item in ret['result']:
                     self.dictEntities[entityKey].append(('Leads',item, False))
-                    print "Trovato Leads con entityKey = {0} e id = {1}".format(entityKey,item["id"] )
+                    log.debug( "Trovato Leads con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
             else:
-                print "Errore in ricerca Leads {0} [{1}] ".format( sQueryLeads, ret)
+                log.error("Errore in ricerca Leads {0} [{1}] ".format( sQueryLeads, ret))
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-1)
             
             # Search Accounts
@@ -430,9 +458,9 @@ class MyVtiger:
             if ret['success']:
                 for item in ret['result']:
                     self.dictEntities[entityKey].append(('Accounts',item, False))
-                    print "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] )
+                    log.debug(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
             else:
-                print "Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret)
+                log.error( "Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-2)
             
             # Search Contacts
@@ -441,9 +469,9 @@ class MyVtiger:
             if ret['success']:
                 for item in ret['result']:
                     self.dictEntities[entityKey].append(('Contacts',item, False))
-                    print "Trovato Contacts con entityKey = {0} e id = {1}".format(entityKey,item["id"] )
+                    log.debug( "Trovato Contacts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ) )
             else:
-                print "Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret)
+                log.error(  "Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-3)
             
             if entityKey in self.dictEntities:
@@ -460,10 +488,11 @@ class MyVtiger:
                     if retDict["type_event"] == "course_subscribe":
                         bCourseAdded = True
                     self.dictEntities[entityKey].append(('Leads',ret["result"], bCourseAdded))
-                    print "Aggiunto nuovo Lead con entityKey = {0} e id = {1}".format(entityKey,ret["result"]["id"] )
+                    log.info( "Aggiunto nuovo Lead con entityKey = {0} e id = {1}".format(entityKey,ret["result"]["id"] ) )
                     setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],2)
                 else:
                     setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-4)
+                    log.error(  "Errore in creazione Lead {0} [{1}] ".format( elementDict, ret))
             result = self.dictEntities[entityKey]       
         return result
 
@@ -480,22 +509,33 @@ class MyVtiger:
         refId = "{0}_{1}".format(retDict["type_event"],retDict["idmessage_log"]) 
         if retDict["type_event"] == "new_course":
             targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["id"])
-            targetname = "Corso WEB: {0} ({1})".format(retDict["name"], retDict["id"])
+            cf_1471 = "name"
+            if "name" in retDict:
+                targetname = "Corso WEB: {0} ({1})".format(retDict["name"], retDict["id"])
+                cf_1471 = retDict["name"]
+            else:
+                targetname = "Corso WEB: {0} ({1})".format("name", retDict["id"])
+                log.error(  "{0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"name"))
             assignedUserId = "19x1705"
             targetType = "Iscrizione Corso"
             cf_1470 = retDict["id"]
             cf_1226 = retDict["begins_at"]
             cf_1468 = retDict["ends_at"]
             cf_1469 = retDict["language"]
-            cf_1471 = retDict["name"]
         elif retDict["type_event"] == "download":
-            targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["description"])
-            targetType = "Download"
-            targetname = "Download WEB: {0} {1}".format(retDict["type_event"],retDict["description"])
+            if "description" in retDict:
+                targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["description"])
+                targetType = "Download"
+                targetname = "Download WEB: {0} {1}".format(retDict["type_event"],retDict["description"])
+            else:
+                log.error(  "{0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"description"))
         elif retDict["type_event"] == "consulting":
-            targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["category"])
-            targetType = "Richiesta Consulenze (Form)"
-            targetname = "Consulenza WEB: {0}".format(retDict["category"])
+            if "category" in retDict:
+                targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["category"])
+                targetType = "Richiesta Consulenze (Form)"
+                targetname = "Consulenza WEB: {0}".format(retDict["category"])
+            else:
+                log.error(  "{0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"category"))
         elif retDict["type_event"] == "registration":
             targetKey =  retDict["type_event"]
             targetType = "Registrazione WEB"
@@ -509,20 +549,23 @@ class MyVtiger:
             targetType = "Newsletter Unsubscription WEB"
             targetname = targetType
         elif retDict["type_event"] == "course_subscribe":
-            targetKey =  "new_course_{0}".format(retDict["course_id"])
-            courseDict = getCourseById(self.host,self.port, self.user,self.password, self.database,retDict["course_id"])
-            targetname = "Corso WEB: {0} ({1})".format(courseDict["name"], courseDict["id"])
-            assignedUserId = "19x1705"
-            targetType = "Iscrizione Corso"
-            cf_1470 = courseDict["id"]
-            cf_1226 = courseDict["begins_at"]
-            cf_1468 = courseDict["ends_at"]
-            cf_1469 = courseDict["language"]
-            cf_1471 = courseDict["name"]
+            if "course_id" in retDict:
+                targetKey =  "new_course_{0}".format(retDict["course_id"])
+                courseDict = getCourseById(self.host,self.port, self.user,self.password, self.database,retDict["course_id"])
+                targetname = "Corso WEB: {0} ({1})".format(courseDict["name"], courseDict["id"])
+                assignedUserId = "19x1705"
+                targetType = "Iscrizione Corso"
+                cf_1470 = courseDict["id"]
+                cf_1226 = courseDict["begins_at"]
+                cf_1468 = courseDict["ends_at"]
+                cf_1469 = courseDict["language"]
+                cf_1471 = courseDict["name"]
+            else:
+                log.error(  "{0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"course_id") )
         if targetKey:
             if targetKey in self.dictTargets: 
                 result = self.dictTargets[targetKey]
-                print "trovato TARGET {0} {1} nella cache con key = {2}".format(result["id"], result["targetname"], targetKey )
+                log.info(  "trovato TARGET {0} {1} nella cache con key = {2}".format(result["id"], result["targetname"], targetKey ))
             else:
                 sQueryTargets = "SELECT * FROM Targets WHERE cf_1545 = '{0}';".format(targetKey)
                 ret = self.queryVtiger(sQueryTargets)
@@ -531,7 +574,7 @@ class MyVtiger:
                         result = item
                     if( result ):
                         self.dictTargets[targetKey] = result
-                        print "trovato TARGET {0} {1} in VTE con cf_1545 = {2}".format(result["id"], result["targetname"], targetKey )
+                        log.info(  "trovato TARGET {0} {1} in VTE con cf_1545 = {2}".format(result["id"], result["targetname"], targetKey ))
                     else:
                         targetDict = {"targetname":targetname,  
                                        "assigned_user_id":assignedUserId,   
@@ -547,9 +590,9 @@ class MyVtiger:
                             result = ret['result'] 
                             self.dictTargets[targetKey] = result
                         else:
-                            print "Errore in creazione {0} [{1}] ".format( targetDict, ret)
+                            log.error(  "Errore in creazione {0} [{1}] ".format( targetDict, ret) )
                 else:
-                    print "Errore in ricerca {0} [{1}] ".format( sQueryTargets, ret)
+                    log.error( "Errore in ricerca {0} [{1}] ".format( sQueryTargets, ret) )
         return targetKey, result
 
 def getMessageLog(host,port, user,password, database):
@@ -571,11 +614,11 @@ def getMessageLog(host,port, user,password, database):
                       ORDER BY message_log.when_timestamp"""
     cursor.execute(query)    
     mvt = MyVtiger()
-    elementListDict = {}
+    # elementListDict = {}
     for row in cursor:
         type_event = row[3] 
         retDict, eventTypeCode = getMessage(host,port, user,password, database,row[0])
-        print "message_log id = {0}".format(row[0])
+        log.debug( "message_log id = {0}".format(row[0]))
         retDict["idmessage_log"] = row[0]
         retDict["email"] = row[5]
         retDict["timestamp"] = row[1]
@@ -592,9 +635,9 @@ def getMessageLog(host,port, user,password, database):
         bNewLead = False
         iNum = 0
         for entityItem in retEntityList:
-            retEvent = mvt.addEventToEntity(retDict, entityItem[1] )
+            retEvent = mvt.addEventToEntity(retDict, entityItem[1],entityItem[0]  )
             bNewLead = entityItem[2]
-            elementListDict[iNum] = {"crmid":retTargetVal["id"],"relcrmid":entityItem[1]["id"]}
+            # elementListDict[iNum] = {"crmid":retTargetVal["id"],"relcrmid":entityItem[1]["id"]}
             iNum += 1
         if type_event == 'registration':
             pass
@@ -603,7 +646,23 @@ def getMessageLog(host,port, user,password, database):
         if type_event == 'download':
             pass
         if type_event == 'consulting':
-            pass
+            # Consulenza
+            if entityItem[0] == "Accounts" or (entityItem[0] == "Contacts" and "account_id" in entityItem[1]):
+                contactId = 0
+                entId = entityItem[1]["id"]
+                if entityItem[0] == "Contacts":
+                    contactId = entId
+                    entId = entityItem[1]["account_id"]
+                consultingDict = {"assigned_user_id":entityItem[1]["assigned_user_id"],"consulenzaname":22, "parent_display":entId, "contact":contactId, "consulenzastatus":"Open", "description":retDict["description"]}
+                if "file" in retDict:
+                    consultingDict["description"] = "{0}\n[{1}]".format(consultingDict["description"], retDict["file"])
+                retCons = mvt.createVtiger("Consulenza", consultingDict)
+                if retCons["success"]:
+                    result = retCons['result']
+                    setMessageLogStatus(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,retDict["idmessage_log"],5)
+                else:
+                    log.error( "Errore in creazione Consulenza per message_log con id {2} -  Consulenza element = {0} - [{1}] ".format( consultingDict, retCons, retDict["idmessage_log"]) ) 
+                    setMessageLogStatus(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,retDict["idmessage_log"],-5)           
         if type_event == 'course_subscribe':
             regDict, reg_idmessage_log, timestamp, eventTypeCode = getLastEventByType(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,"registration",retDict["email"])
             elementDict = {"assigned_user_id":"19x1705","leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]), "cf_744":"{0}".format(retDict["idmessage_log"])}     
@@ -623,10 +682,13 @@ def getMessageLog(host,port, user,password, database):
             if retLead["success"]:
                 result = retLead['result']
             else:
-                print "Errore in creazione Lead {0} [{1}] ".format( elementDict, retLead)
+                log.error( "Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
     cursor.close()
     cnx.close()
-    # mvt.createLinks(elementListDict)
+    retLinks = mvt.createLinks({"name":"value"})
+    if not retLinks["success"]:
+        log.error( "Errore in creazione link Target vs Entityies  [{0}] ".format( retLinks) )        
     return True
 
 getMessageLog(sHost,sPort,sUser,sPass,sDB)
+log.info("....terminated")
