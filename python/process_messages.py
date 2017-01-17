@@ -11,6 +11,9 @@ from hashlib import md5
 import logging
 import logging.handlers
 
+from datetime import datetime
+from twisted.internet.task import LoopingCall
+from twisted.internet import reactor
 
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
@@ -20,7 +23,6 @@ formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message
 file_handler.setFormatter(formatter)
 log.addHandler(file_handler)
 
-log.info("starting....")
 # "email":"pippo@pippo.com", "lastname":"bello", "firstname":"pippo", "newsletter_permission":1, "company":"example", "assigned_user_id":userId}
 # {u'city': u'Roma', u'first_name': u'Mario', u'last_name': u'Rossi', u'tel': u'+391234567890', u'zip': u'12345', u'language': u'IT', u'country': u'IT', u'company': u'Mario Rossi Engineering', u'job': u'engineer', u'address': u'Piazza del Popolo 11', u'region': u'IT-62'}
 keySubjects = {
@@ -690,5 +692,15 @@ def getMessageLog(host,port, user,password, database):
         log.error( "Errore in creazione link Target vs Entityies  [{0}] ".format( retLinks) )        
     return True
 
-getMessageLog(sHost,sPort,sUser,sPass,sDB)
-log.info("....terminated")
+
+log.info("setup....")   
+    
+def hyper_task():
+    log.info("starting loop....")
+    getMessageLog(sHost,sPort,sUser,sPass,sDB)
+    log.info("loop terminated")
+
+
+lc = LoopingCall(hyper_task)
+lc.start(60*60*4)
+reactor.run()
