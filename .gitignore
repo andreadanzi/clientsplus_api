@@ -1,3 +1,4 @@
 /web/vendor/
 /web/logs/*
 !/web/logs/README.md
+*.log
