@@ -1,4 +1,0 @@
-python_app:
-  build: .
-  volumes:
-   - /data/python/logs:/usr/src/app/logs
