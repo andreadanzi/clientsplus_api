@@ -9,8 +9,7 @@ services:
       - 80
     depends_on:
       - web-backend
-
-
+      
   web-backend:
     build:
       context: .
@@ -20,6 +19,15 @@ services:
     depends_on:
       - db-mysql
   
+  python_app:
+    build:
+      context: ./docker/python
+      dockerfile: Dockerfile
+    volumes:
+      - /data/python/logs:/usr/src/app/logs
+    depends_on:
+      - db-mysql
+
   db-mysql:
     image: mysql
     ports:
