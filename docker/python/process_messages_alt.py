@@ -14,7 +14,9 @@ import logging.handlers
 
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
-file_handler = logging.handlers.RotatingFileHandler("{0}.log".format(os.path.basename(__file__).split(".")[0]), maxBytes=5000000,backupCount=5)
+if not os.path.exists("logs"):
+    os.makedirs("logs")
+file_handler = logging.handlers.RotatingFileHandler(os.path.join("logs","{0}.log".format(os.path.basename(__file__).split(".")[0])), maxBytes=5000000,backupCount=5)
 file_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 file_handler.setFormatter(formatter)
