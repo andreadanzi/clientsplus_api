@@ -1,0 +1,393 @@
+setup....
+starting loop....
+######## login as webweb 
+	user id = 19x132902 
+message_log id = 191
+ERRORE: 191-download missing description
+ERRORE: manca registrazione per luca@pigmentolab.com download
+message_log id = 192
+ERRORE: 192-download missing description
+message_log id = 193
+ERRORE: 193-download missing description
+message_log id = 194
+ERRORE: 194-download missing description
+message_log id = 195
+ERRORE: 195-download missing description
+message_log id = 196
+ERRORE: 196-download missing description
+message_log id = 200
+trovato TARGET 38x3501356 Download WEB: download 1484233870-BLOCKHAUS-LOGHOUSE.zip in VTE con cf_1545 = download_1484233870-BLOCKHAUS-LOGHOUSE.zip
+ERRORE: manca registrazione per laura.dalvit@rothoblaas.com  download
+message_log id = 201
+trovato TARGET 38x3505476 Download WEB: download 1484726112-FLANKSOUND-PROJECT_EN.pdf in VTE con cf_1545 = download_1484726112-FLANKSOUND-PROJECT_EN.pdf
+message_log id = 202
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf in VTE con cf_1545 = download_1484664187-2017_01_flyer school.pdf
+message_log id = 203
+ERRORE: 203-download missing description
+message_log id = 204
+ERRORE: 204-download missing description
+message_log id = 205
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+message_log id = 206
+trovato TARGET 38x3505480 Download WEB: download EN_MEMBRANES_AND_TAPES_01_17.pdf in VTE con cf_1545 = download_EN_MEMBRANES_AND_TAPES_01_17.pdf
+message_log id = 207
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+message_log id = 209
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+message_log id = 210
+trovato TARGET 38x3498897 Download WEB: download MyProject4_01ML.setup.exe in VTE con cf_1545 = download_MyProject4_01ML.setup.exe
+message_log id = 211
+trovato TARGET 38x3498897 Download WEB: download MyProject4_01ML.setup.exe nella cache con key = download_MyProject4_01ML.setup.exe
+message_log id = 212
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+message_log id = 213
+trovato TARGET 38x3501257 Download WEB: download 1484233485-TITAN N.rfa in VTE con cf_1545 = download_1484233485-TITAN N.rfa
+message_log id = 214
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+message_log id = 215
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+message_log id = 216
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+message_log id = 219
+trovato TARGET 38x3505487 Corso WEB: BRETTSPERRHOLZ DEUTSCH (5) in VTE con cf_1545 = new_course_5
+message_log id = 220
+trovato TARGET 38x3505488 Corso WEB: BRETTSPERRHOLZ DEUTSCH (6) in VTE con cf_1545 = new_course_6
+message_log id = 221
+ERRORE: 221-new_course missing name
+trovato TARGET 38x3505489 Corso WEB: name (7) in VTE con cf_1545 = new_course_7
+message_log id = 222
+ERRORE: 222-new_course missing name
+trovato TARGET 38x3505490 Corso WEB: name (8) in VTE con cf_1545 = new_course_8
+message_log id = 223
+trovato TARGET 38x3505491 Corso WEB: CORSO DI CARPENTERIA E TETTO IN LEGNO (9) in VTE con cf_1545 = new_course_9
+message_log id = 224
+trovato TARGET 38x3505492 Corso WEB: CLT STRUCTURES (10) in VTE con cf_1545 = new_course_10
+message_log id = 225
+trovato TARGET 38x3505493 Corso WEB: CLT STRUCTURES (11) in VTE con cf_1545 = new_course_11
+message_log id = 226
+trovato TARGET 38x3505494 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (12) in VTE con cf_1545 = new_course_12
+message_log id = 227
+trovato TARGET 38x3505495 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (13) in VTE con cf_1545 = new_course_13
+message_log id = 228
+ERRORE: 228-new_course missing name
+trovato TARGET 38x3505496 Corso WEB: name (14) in VTE con cf_1545 = new_course_14
+message_log id = 229
+ERRORE: 229-new_course missing name
+trovato TARGET 38x3505497 Corso WEB: name (15) in VTE con cf_1545 = new_course_15
+message_log id = 230
+ERRORE: 230-new_course missing name
+trovato TARGET 38x3505498 Corso WEB: name (16) in VTE con cf_1545 = new_course_16
+message_log id = 231
+ERRORE: 231-new_course missing name
+trovato TARGET 38x3505499 Corso WEB: name (17) in VTE con cf_1545 = new_course_17
+message_log id = 232
+ERRORE: 232-new_course missing name
+trovato TARGET 38x3505500 Corso WEB: name (18) in VTE con cf_1545 = new_course_18
+message_log id = 233
+trovato TARGET 38x3505501 Corso WEB: CORSO DI MODELLAZIONE DI EDIFICI IN LEGNO (19) in VTE con cf_1545 = new_course_19
+message_log id = 234
+ERRORE: 234-new_course missing name
+trovato TARGET 38x3505502 Corso WEB: name (20) in VTE con cf_1545 = new_course_20
+message_log id = 235
+ERRORE: 235-new_course missing name
+trovato TARGET 38x3501379 Corso WEB: name (2) in VTE con cf_1545 = new_course_2
+message_log id = 236
+trovato TARGET 38x3505503 Corso WEB: CORSO DI PROGETTAZIONE CASE LEGNO (21) in VTE con cf_1545 = new_course_21
+message_log id = 237
+trovato TARGET 38x3505504 Corso WEB: CORSO DI PROGETTAZIONE SISTEMI ANTICADUTA (22) in VTE con cf_1545 = new_course_22
+message_log id = 238
+trovato TARGET 38x3505505 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (23) in VTE con cf_1545 = new_course_23
+message_log id = 239
+trovato TARGET 38x3505506 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (24) in VTE con cf_1545 = new_course_24
+message_log id = 240
+ERRORE: 240-new_course missing name
+trovato TARGET 38x3505507 Corso WEB: name (25) in VTE con cf_1545 = new_course_25
+message_log id = 241
+ERRORE: 241-new_course missing name
+trovato TARGET 38x3505508 Corso WEB: name (26) in VTE con cf_1545 = new_course_26
+message_log id = 242
+trovato TARGET 38x3505509 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (27) in VTE con cf_1545 = new_course_27
+message_log id = 243
+trovato TARGET 38x3505510 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (28) in VTE con cf_1545 = new_course_28
+message_log id = 244
+trovato TARGET 38x3505511 Corso WEB: CLT STRUCTURES (29) in VTE con cf_1545 = new_course_29
+message_log id = 245
+trovato TARGET 38x3505512 Corso WEB: CLT STRUCTURES (30) in VTE con cf_1545 = new_course_30
+message_log id = 246
+ERRORE: 246-new_course missing name
+trovato TARGET 38x3505496 Corso WEB: name (14) nella cache con key = new_course_14
+message_log id = 247
+ERRORE: 247-new_course missing name
+trovato TARGET 38x3505497 Corso WEB: name (15) nella cache con key = new_course_15
+message_log id = 248
+trovato TARGET 38x3505505 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (23) nella cache con key = new_course_23
+message_log id = 249
+trovato TARGET 38x3505506 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (24) nella cache con key = new_course_24
+message_log id = 250
+trovato TARGET 38x3505485 Corso WEB: CORSO DI ACUSTICA IN ARCHITETTURA (3) in VTE con cf_1545 = new_course_3
+message_log id = 251
+trovato TARGET 38x3505486 Corso WEB: CORSO DI ACUSTICA IN ARCHITETTURA (4) in VTE con cf_1545 = new_course_4
+message_log id = 252
+trovato TARGET 38x3505501 Corso WEB: CORSO DI MODELLAZIONE DI EDIFICI IN LEGNO (19) nella cache con key = new_course_19
+message_log id = 253
+ERRORE: 253-new_course missing name
+trovato TARGET 38x3505502 Corso WEB: name (20) nella cache con key = new_course_20
+loop terminated
+setup....
+starting loop....
+######## login as webweb 
+	user id = 19x132902 
+###### message_log id = 192 by luca@pigmentolab.com type 12 at 2017-01-18 08:30:35
+ERRORE: 192-download missing description
+ERRORE: manca registrazione per luca@pigmentolab.com download
+###### message_log id = 193 by luca@pigmentolab.com type 12 at 2017-01-18 08:30:39
+ERRORE: 193-download missing description
+###### message_log id = 194 by luca@pigmentolab.com type 12 at 2017-01-18 08:31:07
+ERRORE: 194-download missing description
+###### message_log id = 195 by luca@pigmentolab.com type 12 at 2017-01-18 08:31:29
+ERRORE: 195-download missing description
+###### message_log id = 196 by luca@pigmentolab.com type 12 at 2017-01-18 08:31:47
+ERRORE: 196-download missing description
+###### message_log id = 201 by luca@pigmentolab.com type 12 at 2017-01-18 09:34:35
+trovato TARGET 38x3505476 Download WEB: download 1484726112-FLANKSOUND-PROJECT_EN.pdf in VTE con cf_1545 = download_1484726112-FLANKSOUND-PROJECT_EN.pdf
+###### message_log id = 202 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 09:53:36
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf in VTE con cf_1545 = download_1484664187-2017_01_flyer school.pdf
+ERRORE: manca registrazione per laura.dalvit@rothoblaas.com  download
+###### message_log id = 203 by luca@pigmentolab.com type 12 at 2017-01-18 09:56:05
+ERRORE: 203-download missing description
+###### message_log id = 204 by luca@pigmentolab.com type 12 at 2017-01-18 09:56:23
+ERRORE: 204-download missing description
+###### message_log id = 205 by luca@pigmentolab.com type 12 at 2017-01-18 10:00:58
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 206 by luca@pigmentolab.com type 12 at 2017-01-18 10:04:03
+trovato TARGET 38x3505480 Download WEB: download EN_MEMBRANES_AND_TAPES_01_17.pdf in VTE con cf_1545 = download_EN_MEMBRANES_AND_TAPES_01_17.pdf
+###### message_log id = 207 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 10:42:14
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 209 by luca@pigmentolab.com type 12 at 2017-01-18 12:58:48
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 210 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 13:31:04
+trovato TARGET 38x3498897 Download WEB: download MyProject4_01ML.setup.exe in VTE con cf_1545 = download_MyProject4_01ML.setup.exe
+###### message_log id = 211 by luca@pigmentolab.com type 12 at 2017-01-18 13:35:07
+trovato TARGET 38x3498897 Download WEB: download MyProject4_01ML.setup.exe nella cache con key = download_MyProject4_01ML.setup.exe
+###### message_log id = 212 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 13:38:32
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 213 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 14:03:30
+trovato TARGET 38x3501257 Download WEB: download 1484233485-TITAN N.rfa in VTE con cf_1545 = download_1484233485-TITAN N.rfa
+###### message_log id = 214 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 14:06:01
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 215 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 14:06:13
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 216 by laura.dalvit@rothoblaas.com  type 12 at 2017-01-18 14:06:56
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 219 by courses@rothoblaas.com type 16 at 2017-01-18 14:12:11
+trovato TARGET 38x3505487 Corso WEB: BRETTSPERRHOLZ DEUTSCH (5) in VTE con cf_1545 = new_course_5
+###### message_log id = 220 by courses@rothoblaas.com type 16 at 2017-01-18 14:13:03
+trovato TARGET 38x3505488 Corso WEB: BRETTSPERRHOLZ DEUTSCH (6) in VTE con cf_1545 = new_course_6
+###### message_log id = 221 by courses@rothoblaas.com type 16 at 2017-01-18 14:14:01
+ERRORE: 221-new_course missing name
+trovato TARGET 38x3505489 Corso WEB: name (7) in VTE con cf_1545 = new_course_7
+###### message_log id = 222 by courses@rothoblaas.com type 16 at 2017-01-18 14:14:17
+ERRORE: 222-new_course missing name
+trovato TARGET 38x3505490 Corso WEB: name (8) in VTE con cf_1545 = new_course_8
+###### message_log id = 223 by courses@rothoblaas.com type 16 at 2017-01-18 14:16:03
+trovato TARGET 38x3505491 Corso WEB: CORSO DI CARPENTERIA E TETTO IN LEGNO (9) in VTE con cf_1545 = new_course_9
+###### message_log id = 224 by courses@rothoblaas.com type 16 at 2017-01-18 14:16:38
+trovato TARGET 38x3505492 Corso WEB: CLT STRUCTURES (10) in VTE con cf_1545 = new_course_10
+###### message_log id = 225 by courses@rothoblaas.com type 16 at 2017-01-18 14:16:51
+trovato TARGET 38x3505493 Corso WEB: CLT STRUCTURES (11) in VTE con cf_1545 = new_course_11
+###### message_log id = 226 by courses@rothoblaas.com type 16 at 2017-01-18 14:17:49
+trovato TARGET 38x3505494 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (12) in VTE con cf_1545 = new_course_12
+###### message_log id = 227 by courses@rothoblaas.com type 16 at 2017-01-18 14:18:10
+trovato TARGET 38x3505495 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (13) in VTE con cf_1545 = new_course_13
+###### message_log id = 228 by courses@rothoblaas.com type 16 at 2017-01-18 14:19:03
+ERRORE: 228-new_course missing name
+trovato TARGET 38x3505496 Corso WEB: name (14) in VTE con cf_1545 = new_course_14
+###### message_log id = 229 by courses@rothoblaas.com type 16 at 2017-01-18 14:19:15
+ERRORE: 229-new_course missing name
+trovato TARGET 38x3505497 Corso WEB: name (15) in VTE con cf_1545 = new_course_15
+###### message_log id = 230 by courses@rothoblaas.com type 16 at 2017-01-18 14:19:46
+ERRORE: 230-new_course missing name
+trovato TARGET 38x3505498 Corso WEB: name (16) in VTE con cf_1545 = new_course_16
+###### message_log id = 231 by courses@rothoblaas.com type 16 at 2017-01-18 14:20:14
+ERRORE: 231-new_course missing name
+trovato TARGET 38x3505499 Corso WEB: name (17) in VTE con cf_1545 = new_course_17
+###### message_log id = 232 by courses@rothoblaas.com type 16 at 2017-01-18 14:20:26
+ERRORE: 232-new_course missing name
+trovato TARGET 38x3505500 Corso WEB: name (18) in VTE con cf_1545 = new_course_18
+###### message_log id = 233 by courses@rothoblaas.com type 16 at 2017-01-18 14:21:26
+trovato TARGET 38x3505501 Corso WEB: CORSO DI MODELLAZIONE DI EDIFICI IN LEGNO (19) in VTE con cf_1545 = new_course_19
+###### message_log id = 234 by courses@rothoblaas.com type 16 at 2017-01-18 14:22:10
+ERRORE: 234-new_course missing name
+trovato TARGET 38x3505502 Corso WEB: name (20) in VTE con cf_1545 = new_course_20
+###### message_log id = 235 by courses@rothoblaas.com type 16 at 2017-01-18 14:22:31
+ERRORE: 235-new_course missing name
+trovato TARGET 38x3501379 Corso WEB: name (2) in VTE con cf_1545 = new_course_2
+###### message_log id = 236 by courses@rothoblaas.com type 16 at 2017-01-18 14:23:08
+trovato TARGET 38x3505503 Corso WEB: CORSO DI PROGETTAZIONE CASE LEGNO (21) in VTE con cf_1545 = new_course_21
+###### message_log id = 237 by courses@rothoblaas.com type 16 at 2017-01-18 14:23:31
+trovato TARGET 38x3505504 Corso WEB: CORSO DI PROGETTAZIONE SISTEMI ANTICADUTA (22) in VTE con cf_1545 = new_course_22
+###### message_log id = 238 by courses@rothoblaas.com type 16 at 2017-01-18 14:24:01
+trovato TARGET 38x3505505 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (23) in VTE con cf_1545 = new_course_23
+###### message_log id = 239 by courses@rothoblaas.com type 16 at 2017-01-18 14:24:12
+trovato TARGET 38x3505506 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (24) in VTE con cf_1545 = new_course_24
+###### message_log id = 240 by courses@rothoblaas.com type 16 at 2017-01-18 14:24:39
+ERRORE: 240-new_course missing name
+trovato TARGET 38x3505507 Corso WEB: name (25) in VTE con cf_1545 = new_course_25
+###### message_log id = 241 by courses@rothoblaas.com type 16 at 2017-01-18 14:24:51
+ERRORE: 241-new_course missing name
+trovato TARGET 38x3505508 Corso WEB: name (26) in VTE con cf_1545 = new_course_26
+###### message_log id = 242 by courses@rothoblaas.com type 16 at 2017-01-18 14:39:26
+trovato TARGET 38x3505509 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (27) in VTE con cf_1545 = new_course_27
+###### message_log id = 243 by courses@rothoblaas.com type 16 at 2017-01-18 14:39:39
+trovato TARGET 38x3505510 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (28) in VTE con cf_1545 = new_course_28
+###### message_log id = 244 by courses@rothoblaas.com type 16 at 2017-01-18 14:40:28
+trovato TARGET 38x3505511 Corso WEB: CLT STRUCTURES (29) in VTE con cf_1545 = new_course_29
+###### message_log id = 245 by courses@rothoblaas.com type 16 at 2017-01-18 14:40:50
+trovato TARGET 38x3505512 Corso WEB: CLT STRUCTURES (30) in VTE con cf_1545 = new_course_30
+###### message_log id = 246 by courses@rothoblaas.com type 16 at 2017-01-18 14:56:09
+ERRORE: 246-new_course missing name
+trovato TARGET 38x3505496 Corso WEB: name (14) nella cache con key = new_course_14
+###### message_log id = 247 by courses@rothoblaas.com type 16 at 2017-01-18 14:56:15
+ERRORE: 247-new_course missing name
+trovato TARGET 38x3505497 Corso WEB: name (15) nella cache con key = new_course_15
+###### message_log id = 248 by courses@rothoblaas.com type 16 at 2017-01-18 14:57:25
+trovato TARGET 38x3505505 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (23) nella cache con key = new_course_23
+###### message_log id = 249 by courses@rothoblaas.com type 16 at 2017-01-18 14:57:28
+trovato TARGET 38x3505506 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (24) nella cache con key = new_course_24
+###### message_log id = 250 by courses@rothoblaas.com type 16 at 2017-01-18 14:57:37
+trovato TARGET 38x3505485 Corso WEB: CORSO DI ACUSTICA IN ARCHITETTURA (3) in VTE con cf_1545 = new_course_3
+###### message_log id = 251 by courses@rothoblaas.com type 16 at 2017-01-18 14:57:41
+trovato TARGET 38x3505486 Corso WEB: CORSO DI ACUSTICA IN ARCHITETTURA (4) in VTE con cf_1545 = new_course_4
+###### message_log id = 252 by courses@rothoblaas.com type 16 at 2017-01-18 14:57:56
+trovato TARGET 38x3505501 Corso WEB: CORSO DI MODELLAZIONE DI EDIFICI IN LEGNO (19) nella cache con key = new_course_19
+###### message_log id = 253 by courses@rothoblaas.com type 16 at 2017-01-18 14:58:08
+ERRORE: 253-new_course missing name
+trovato TARGET 38x3505502 Corso WEB: name (20) nella cache con key = new_course_20
+loop terminated
+setup....
+starting loop....
+######## login as webweb 
+	user id = 19x132902 
+###### message_log id = 193 by luca@pigmentolab.com type download at 2017-01-18 08:30:39
+ERRORE: 193-download missing description
+ERRORE: manca registrazione per luca@pigmentolab.com download
+###### message_log id = 194 by luca@pigmentolab.com type download at 2017-01-18 08:31:07
+ERRORE: 194-download missing description
+###### message_log id = 195 by luca@pigmentolab.com type download at 2017-01-18 08:31:29
+ERRORE: 195-download missing description
+###### message_log id = 196 by luca@pigmentolab.com type download at 2017-01-18 08:31:47
+ERRORE: 196-download missing description
+###### message_log id = 201 by luca@pigmentolab.com type download at 2017-01-18 09:34:35
+trovato TARGET 38x3505476 Download WEB: download 1484726112-FLANKSOUND-PROJECT_EN.pdf in VTE con cf_1545 = download_1484726112-FLANKSOUND-PROJECT_EN.pdf
+###### message_log id = 203 by luca@pigmentolab.com type download at 2017-01-18 09:56:05
+ERRORE: 203-download missing description
+###### message_log id = 204 by luca@pigmentolab.com type download at 2017-01-18 09:56:23
+ERRORE: 204-download missing description
+###### message_log id = 205 by luca@pigmentolab.com type download at 2017-01-18 10:00:58
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf in VTE con cf_1545 = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 206 by luca@pigmentolab.com type download at 2017-01-18 10:04:03
+trovato TARGET 38x3505480 Download WEB: download EN_MEMBRANES_AND_TAPES_01_17.pdf in VTE con cf_1545 = download_EN_MEMBRANES_AND_TAPES_01_17.pdf
+###### message_log id = 207 by laura.dalvit@rothoblaas.com  type download at 2017-01-18 10:42:14
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+ERRORE: manca registrazione per laura.dalvit@rothoblaas.com  download
+###### message_log id = 209 by luca@pigmentolab.com type download at 2017-01-18 12:58:48
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 210 by laura.dalvit@rothoblaas.com  type download at 2017-01-18 13:31:04
+trovato TARGET 38x3498897 Download WEB: download MyProject4_01ML.setup.exe in VTE con cf_1545 = download_MyProject4_01ML.setup.exe
+###### message_log id = 211 by luca@pigmentolab.com type download at 2017-01-18 13:35:07
+trovato TARGET 38x3498897 Download WEB: download MyProject4_01ML.setup.exe nella cache con key = download_MyProject4_01ML.setup.exe
+###### message_log id = 212 by laura.dalvit@rothoblaas.com  type download at 2017-01-18 13:38:32
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 213 by laura.dalvit@rothoblaas.com  type download at 2017-01-18 14:03:30
+trovato TARGET 38x3501257 Download WEB: download 1484233485-TITAN N.rfa in VTE con cf_1545 = download_1484233485-TITAN N.rfa
+###### message_log id = 214 by laura.dalvit@rothoblaas.com  type download at 2017-01-18 14:06:01
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 215 by laura.dalvit@rothoblaas.com  type download at 2017-01-18 14:06:13
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 216 by laura.dalvit@rothoblaas.com  type download at 2017-01-18 14:06:56
+trovato TARGET 38x3501380 Download WEB: download 1484664187-2017_01_flyer school.pdf nella cache con key = download_1484664187-2017_01_flyer school.pdf
+###### message_log id = 219 by courses@rothoblaas.com type new_course at 2017-01-18 14:12:11
+trovato TARGET 38x3505487 Corso WEB: BRETTSPERRHOLZ DEUTSCH (5) in VTE con cf_1545 = new_course_5
+###### message_log id = 220 by courses@rothoblaas.com type new_course at 2017-01-18 14:13:03
+trovato TARGET 38x3505488 Corso WEB: BRETTSPERRHOLZ DEUTSCH (6) in VTE con cf_1545 = new_course_6
+###### message_log id = 221 by courses@rothoblaas.com type new_course at 2017-01-18 14:14:01
+ERRORE: 221-new_course missing name
+trovato TARGET 38x3505489 Corso WEB: name (7) in VTE con cf_1545 = new_course_7
+###### message_log id = 222 by courses@rothoblaas.com type new_course at 2017-01-18 14:14:17
+ERRORE: 222-new_course missing name
+trovato TARGET 38x3505490 Corso WEB: name (8) in VTE con cf_1545 = new_course_8
+###### message_log id = 223 by courses@rothoblaas.com type new_course at 2017-01-18 14:16:03
+trovato TARGET 38x3505491 Corso WEB: CORSO DI CARPENTERIA E TETTO IN LEGNO (9) in VTE con cf_1545 = new_course_9
+###### message_log id = 224 by courses@rothoblaas.com type new_course at 2017-01-18 14:16:38
+trovato TARGET 38x3505492 Corso WEB: CLT STRUCTURES (10) in VTE con cf_1545 = new_course_10
+###### message_log id = 225 by courses@rothoblaas.com type new_course at 2017-01-18 14:16:51
+trovato TARGET 38x3505493 Corso WEB: CLT STRUCTURES (11) in VTE con cf_1545 = new_course_11
+###### message_log id = 226 by courses@rothoblaas.com type new_course at 2017-01-18 14:17:49
+trovato TARGET 38x3505494 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (12) in VTE con cf_1545 = new_course_12
+###### message_log id = 227 by courses@rothoblaas.com type new_course at 2017-01-18 14:18:10
+trovato TARGET 38x3505495 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (13) in VTE con cf_1545 = new_course_13
+###### message_log id = 228 by courses@rothoblaas.com type new_course at 2017-01-18 14:19:03
+ERRORE: 228-new_course missing name
+trovato TARGET 38x3505496 Corso WEB: name (14) in VTE con cf_1545 = new_course_14
+###### message_log id = 229 by courses@rothoblaas.com type new_course at 2017-01-18 14:19:15
+ERRORE: 229-new_course missing name
+trovato TARGET 38x3505497 Corso WEB: name (15) in VTE con cf_1545 = new_course_15
+###### message_log id = 230 by courses@rothoblaas.com type new_course at 2017-01-18 14:19:46
+ERRORE: 230-new_course missing name
+trovato TARGET 38x3505498 Corso WEB: name (16) in VTE con cf_1545 = new_course_16
+###### message_log id = 231 by courses@rothoblaas.com type new_course at 2017-01-18 14:20:14
+ERRORE: 231-new_course missing name
+trovato TARGET 38x3505499 Corso WEB: name (17) in VTE con cf_1545 = new_course_17
+###### message_log id = 232 by courses@rothoblaas.com type new_course at 2017-01-18 14:20:26
+ERRORE: 232-new_course missing name
+trovato TARGET 38x3505500 Corso WEB: name (18) in VTE con cf_1545 = new_course_18
+###### message_log id = 233 by courses@rothoblaas.com type new_course at 2017-01-18 14:21:26
+trovato TARGET 38x3505501 Corso WEB: CORSO DI MODELLAZIONE DI EDIFICI IN LEGNO (19) in VTE con cf_1545 = new_course_19
+###### message_log id = 234 by courses@rothoblaas.com type new_course at 2017-01-18 14:22:10
+ERRORE: 234-new_course missing name
+trovato TARGET 38x3505502 Corso WEB: name (20) in VTE con cf_1545 = new_course_20
+###### message_log id = 235 by courses@rothoblaas.com type new_course at 2017-01-18 14:22:31
+ERRORE: 235-new_course missing name
+trovato TARGET 38x3501379 Corso WEB: name (2) in VTE con cf_1545 = new_course_2
+###### message_log id = 236 by courses@rothoblaas.com type new_course at 2017-01-18 14:23:08
+trovato TARGET 38x3505503 Corso WEB: CORSO DI PROGETTAZIONE CASE LEGNO (21) in VTE con cf_1545 = new_course_21
+###### message_log id = 237 by courses@rothoblaas.com type new_course at 2017-01-18 14:23:31
+trovato TARGET 38x3505504 Corso WEB: CORSO DI PROGETTAZIONE SISTEMI ANTICADUTA (22) in VTE con cf_1545 = new_course_22
+###### message_log id = 238 by courses@rothoblaas.com type new_course at 2017-01-18 14:24:01
+trovato TARGET 38x3505505 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (23) in VTE con cf_1545 = new_course_23
+###### message_log id = 239 by courses@rothoblaas.com type new_course at 2017-01-18 14:24:12
+trovato TARGET 38x3505506 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (24) in VTE con cf_1545 = new_course_24
+###### message_log id = 240 by courses@rothoblaas.com type new_course at 2017-01-18 14:24:39
+ERRORE: 240-new_course missing name
+trovato TARGET 38x3505507 Corso WEB: name (25) in VTE con cf_1545 = new_course_25
+###### message_log id = 241 by courses@rothoblaas.com type new_course at 2017-01-18 14:24:51
+ERRORE: 241-new_course missing name
+trovato TARGET 38x3505508 Corso WEB: name (26) in VTE con cf_1545 = new_course_26
+###### message_log id = 242 by courses@rothoblaas.com type new_course at 2017-01-18 14:39:26
+trovato TARGET 38x3505509 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (27) in VTE con cf_1545 = new_course_27
+###### message_log id = 243 by courses@rothoblaas.com type new_course at 2017-01-18 14:39:39
+trovato TARGET 38x3505510 Corso WEB: CONFORT EN UN EDIFICIO PASIVO DE MADERA (28) in VTE con cf_1545 = new_course_28
+###### message_log id = 244 by courses@rothoblaas.com type new_course at 2017-01-18 14:40:28
+trovato TARGET 38x3505511 Corso WEB: CLT STRUCTURES (29) in VTE con cf_1545 = new_course_29
+###### message_log id = 245 by courses@rothoblaas.com type new_course at 2017-01-18 14:40:50
+trovato TARGET 38x3505512 Corso WEB: CLT STRUCTURES (30) in VTE con cf_1545 = new_course_30
+###### message_log id = 246 by courses@rothoblaas.com type new_course at 2017-01-18 14:56:09
+ERRORE: 246-new_course missing name
+trovato TARGET 38x3505496 Corso WEB: name (14) nella cache con key = new_course_14
+###### message_log id = 247 by courses@rothoblaas.com type new_course at 2017-01-18 14:56:15
+ERRORE: 247-new_course missing name
+trovato TARGET 38x3505497 Corso WEB: name (15) nella cache con key = new_course_15
+###### message_log id = 248 by courses@rothoblaas.com type new_course at 2017-01-18 14:57:25
+trovato TARGET 38x3505505 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (23) nella cache con key = new_course_23
+###### message_log id = 249 by courses@rothoblaas.com type new_course at 2017-01-18 14:57:28
+trovato TARGET 38x3505506 Corso WEB: CORSO DI RIABILITAZIONE STRUTTURALE (24) nella cache con key = new_course_24
+###### message_log id = 250 by courses@rothoblaas.com type new_course at 2017-01-18 14:57:37
+trovato TARGET 38x3505485 Corso WEB: CORSO DI ACUSTICA IN ARCHITETTURA (3) in VTE con cf_1545 = new_course_3
+###### message_log id = 251 by courses@rothoblaas.com type new_course at 2017-01-18 14:57:41
+trovato TARGET 38x3505486 Corso WEB: CORSO DI ACUSTICA IN ARCHITETTURA (4) in VTE con cf_1545 = new_course_4
+###### message_log id = 252 by courses@rothoblaas.com type new_course at 2017-01-18 14:57:56
+trovato TARGET 38x3505501 Corso WEB: CORSO DI MODELLAZIONE DI EDIFICI IN LEGNO (19) nella cache con key = new_course_19
+###### message_log id = 253 by courses@rothoblaas.com type new_course at 2017-01-18 14:58:08
+ERRORE: 253-new_course missing name
+trovato TARGET 38x3505502 Corso WEB: name (20) nella cache con key = new_course_20
+loop terminated

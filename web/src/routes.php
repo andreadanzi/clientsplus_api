@@ -156,12 +156,13 @@ $app->post('/message', function ($request, $response) {
             $input['retcode'] = 1;
             $input['error'] = array("code"=>"120","message"=>"Message Already Exists! Params are when = ".$input['when']. " type = ". $input['by'] . " by = " .$input['by']);
         } else {
-            $sql = "INSERT INTO message_log (when_timestamp,type_event,by_email,hashstring, import_status, import_date, timestamp ) VALUES (:when_timestamp,:type_event,:by_email,:hashstring, 0, NOW(), from_unixtime(:when_timestamp))";
+            $sql = "INSERT INTO message_log (when_timestamp,type_event,by_email,hashstring, import_status, import_date, timestamp, payload ) VALUES (:when_timestamp,:type_event,:by_email,:hashstring, 0, NOW(), from_unixtime(:when_timestamp), :payload)";
             $sth = $this->db->prepare($sql);
             $sth->bindParam("when_timestamp", $input['when']);
             $sth->bindParam("type_event", $input['type']);
             $sth->bindParam("by_email", $input['by']);
             $sth->bindParam("hashstring",$hashed);
+            $sth->bindParam("payload",$payload);
             $sth->execute();
             $input['id'] = $this->db->lastInsertId();
             $this->logger->addInfo("new message_log id = " . $input["id"]);
