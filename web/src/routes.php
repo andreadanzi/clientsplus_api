@@ -162,7 +162,7 @@ $app->post('/message', function ($request, $response) {
             $sth->bindParam("type_event", $input['type']);
             $sth->bindParam("by_email", $input['by']);
             $sth->bindParam("hashstring",$hashed);
-            $sth->bindParam("payload",$payload);
+            $sth->bindParam("payload",json_encode($payload) );
             $sth->execute();
             $input['id'] = $this->db->lastInsertId();
             $this->logger->addInfo("new message_log id = " . $input["id"]);
