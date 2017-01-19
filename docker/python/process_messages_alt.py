@@ -764,4 +764,12 @@ def hyper_task():
     getMessageLog(sHost,sPort,sUser,sPass,sDB)
     print("loop terminated")
 
-hyper_task()
+# hyper_task()
+
+from twisted.internet.task import LoopingCall
+from twisted.internet import reactor
+    
+
+lc = LoopingCall(hyper_task)
+lc.start(60*55555)
+reactor.run()
