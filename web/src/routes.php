@@ -47,7 +47,7 @@ $app->get('/messages', function ($request, $response, $args) {
         $resp = $this->response->withStatus(400);
         return $resp->withJson(array("retcode"=>"1","error" => array("code"=>"250","message"=>"Wrong or Missing Token!") ) );
     }
-    $sql = "SELECT idmessage_log, timestamp, hashstring, by_email, when_timestamp, type_event FROM message_log
+    $sql = "SELECT idmessage_log, timestamp, hashstring, by_email, when_timestamp, type_event, import_status FROM message_log
                                 ORDER BY
                                 message_log.idmessage_log ASC";
     $child_sql = "SELECT 
@@ -90,6 +90,7 @@ $app->get('/messages', function ($request, $response, $args) {
                        ,"when"=> $item["when_timestamp"]
                        ,"type"=> $item["type_event"]
                        , "data"=> $dataArray
+                       ,"status"=> $item["import_status"]
                        );
     }
     $this->logger->addInfo("messages GET request, terminated");
