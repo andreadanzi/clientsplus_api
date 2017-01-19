@@ -19,7 +19,8 @@ file_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 file_handler.setFormatter(formatter)
 log.addHandler(file_handler)
-log.debug("started")
+print("started on {0}".format( os.getcwd()) )
+log.debug("started on {0}".format( os.getcwd()))
 # "email":"pippo@pippo.com", "lastname":"bello", "firstname":"pippo", "newsletter_permission":1, "company":"example", "assigned_user_id":userId}
 # {u'city': u'Roma', u'first_name': u'Mario', u'last_name': u'Rossi', u'tel': u'+391234567890', u'zip': u'12345', u'language': u'IT', u'country': u'IT', u'company': u'Mario Rossi Engineering', u'job': u'engineer', u'address': u'Piazza del Popolo 11', u'region': u'IT-62'}
 keySubjects = {
