@@ -92,6 +92,18 @@ keyLeadMapping = {"registration": {
                                     "company":"company",
                                     "country":"country"
                                     },
+                    "consulting": {
+                                    "email":"email",
+                                    "first_name":"firstname",
+                                    "last_name":"lastname",
+                                    "city":"city",
+                                    "zip":"code",
+                                    "region":"state",
+                                    "address":"lane",
+                                    "telephone":"phone",
+                                    "company":"company",
+                                    "country":"country"
+                                    },
                     "course_subscribe": {
                                     "email":"email",
                                     "course_id":"cf_747",
