@@ -707,6 +707,8 @@ def getMessageLog(host,port, user,password, database):
             pass
         if type_event == 'consulting':
             # Consulenza
+            pass
+            """
             if entityItem[0] == "Accounts" or (entityItem[0] == "Contacts" and "account_id" in entityItem[1]):
                 contactId = 0
                 entId = entityItem[1]["id"]
@@ -724,6 +726,7 @@ def getMessageLog(host,port, user,password, database):
                     print( "ERRORE: Errore in creazione Consulenza per message_log con id {2} -  Consulenza element = {0} - [{1}] ".format( consultingDict, retCons, retDict["idmessage_log"]) ) 
                     log.error( "ERRORE: Errore in creazione Consulenza per message_log con id {2} -  Consulenza element = {0} - [{1}] ".format( consultingDict, retCons, retDict["idmessage_log"]) ) 
                     setMessageLogStatus(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,retDict["idmessage_log"],-5)           
+           """
         if type_event == 'course_subscribe':
             regDict, reg_idmessage_log, timestamp, eventTypeCode = getLastEventByType(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,"registration",retDict["email"])
             elementDict = {"assigned_user_id":"19x1705","leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]), "cf_744":"{0}".format(retDict["idmessage_log"])}     
