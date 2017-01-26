@@ -108,8 +108,11 @@ keyLeadMapping = {"registration": {
                                     "email":"email",
                                     "course_id":"cf_747",
                                     "plan":"cf_732",
-                                    "intolerances":"cf_1396",
-                                    "overnight_stay":"overnight_option"
+                                    "intolerance":"cf_1396",
+                                    "overnight_stay":"overnight_option",
+                                    "invoice_code":"cf_756",
+                                    "tax_code":"cf_736",
+                                    "vat_no":"cf_735"
                                     },
                      "new_course": {
                                     "email":"email",
@@ -208,21 +211,32 @@ def getCourseById(host,port, user,password, database,id_course):
                                   db=database)
     cursor = cnx.cursor()
     query = """SELECT 
-                message.datastructure_name,
-                CASE
-                    WHEN message.datastructure_name in ("begins_at","ends_at") THEN from_unixtime(message.datastructure_value)
-                    ELSE message.datastructure_value
-                END AS datastructure_my_value ,
-                event_types.event_type_code,
-                datastructure.*
-                FROM message, datastructure, event_types, message as message_index
-                WHERE
-		message_index.datastructure_name = 'id'
-		AND event_types.event_type_code = 'new_course'
-		AND message_index.datastructure_value = '{0}'
-                AND message.message_log_idmessage_log = message_index.message_log_idmessage_log
-                AND datastructure.iddatastructure = message.datastructure_iddatastructure
-		AND event_types.idevent_types = datastructure.event_types_idevent_types""".format(id_course)
+               message.datastructure_name,
+                        CASE
+                            WHEN message.datastructure_name in ("begins_at","ends_at") THEN from_unixtime(message.datastructure_value)
+                            ELSE message.datastructure_value
+                        END AS datastructure_my_value ,
+                        event_types.event_type_code,
+                        datastructure.*
+                        FROM message, datastructure, event_types, message as message_index
+                        WHERE
+                message_index.datastructure_name = 'id'
+                AND event_types.event_type_code = 'new_course'
+                AND message_index.datastructure_value = '{0}'
+                        AND message.message_log_idmessage_log = message_index.message_log_idmessage_log
+                        AND datastructure.iddatastructure = message.datastructure_iddatastructure
+                AND event_types.idevent_types = datastructure.event_types_idevent_types
+                AND message.message_log_idmessage_log = (SELECT 
+        max(message.message_log_idmessage_log)
+        FROM message, event_types,datastructure
+        WHERE
+        message.datastructure_name = 'id'
+        AND event_types.event_type_code = 'new_course'
+        AND message.datastructure_value = '{0}'
+        AND datastructure.iddatastructure = message.datastructure_iddatastructure
+        AND event_types.idevent_types = datastructure.event_types_idevent_types
+        )
+        ORDER BY message.message_log_idmessage_log""".format(id_course)
     cursor.execute(query)
     retDict = {}
     for row in cursor:
@@ -549,6 +563,7 @@ class MyVtiger:
         assignedUserId = self.userId
         cf_1470 = ""
         cf_1226 = ""
+        cf_1225 = ""
         cf_1468 = ""
         cf_1469 = ""
         cf_1471 = ""
@@ -611,6 +626,9 @@ class MyVtiger:
                 cf_1226 = courseDict["begins_at"]
                 cf_1468 = courseDict["ends_at"]
                 cf_1469 = courseDict["language"]
+                cf_1225 = "NA"
+                if "invoice_code" in retDict:
+                    cf_1225 = retDict["invoice_code"]
                 cf_1471 = courseName
             else:
                 print( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"course_id") )
@@ -639,7 +657,7 @@ class MyVtiger:
                                        "assigned_user_id":assignedUserId,   
                                        "target_type" : targetType,  
                                        "target_state" : "In preparazione" , 
-                                       "cf_1225":"NA",
+                                       "cf_1225":cf_1225,
                                        "cf_1226":cf_1226, 
                                        "cf_1006":targetKey, 
                                        "cf_1545":targetKey, 
@@ -718,51 +736,39 @@ def getMessageLog(host,port, user,password, database):
         if type_event == 'download':
             pass
         if type_event == 'consulting':
-            # Consulenza
             pass
-            """
-            if entityItem[0] == "Accounts" or (entityItem[0] == "Contacts" and "account_id" in entityItem[1]):
-                contactId = 0
-                entId = entityItem[1]["id"]
-                if entityItem[0] == "Contacts":
-                    contactId = entId
-                    entId = entityItem[1]["account_id"]
-                consultingDict = {"assigned_user_id":entityItem[1]["assigned_user_id"],"consulenzaname":22, "parent_display":entId, "contact":contactId, "consulenzastatus":"Open", "description":retDict["description"]}
-                if "file" in retDict:
-                    consultingDict["description"] = "{0}\n[{1}]".format(consultingDict["description"], retDict["file"])
-                retCons = mvt.createVtiger("Consulenza", consultingDict)
-                if retCons["success"]:
-                    result = retCons['result']
-                    setMessageLogStatus(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,retDict["idmessage_log"],5)
-                else:
-                    print( "ERRORE: Errore in creazione Consulenza per message_log con id {2} -  Consulenza element = {0} - [{1}] ".format( consultingDict, retCons, retDict["idmessage_log"]) ) 
-                    log.error( "ERRORE: Errore in creazione Consulenza per message_log con id {2} -  Consulenza element = {0} - [{1}] ".format( consultingDict, retCons, retDict["idmessage_log"]) ) 
-                    setMessageLogStatus(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,retDict["idmessage_log"],-5)           
-           """
         if type_event == 'course_subscribe':
             regDict, reg_idmessage_log, timestamp, eventTypeCode = getLastEventByType(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,"registration",retDict["email"])
-            elementDict = {"assigned_user_id":"19x1705","leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]), "cf_744":"{0}".format(retDict["idmessage_log"])}     
-            keyMap = keyLeadMapping[eventTypeCode]
-            for key in regDict:
-                if key in keyMap:
-                    elementDict[keyMap[key]] = regDict[key]
-            keyMap = keyLeadMapping[retDict["type_event"]]     
-            for key in retDict:
-                if key in keyMap:
-                    elementDict[keyMap[key]] = retDict[key]
-            courseDict = getCourseById(mvt.host,mvt.port, mvt.user,mvt.password, mvt.database,retDict["course_id"])
-            courseName = "Senza Nome"
-            if "name" in courseDict:
-                courseName = courseDict["name"]
-            elementDict["cf_726"] = "{0} ({1})".format( courseName, courseDict["language"])
-            elementDict["cf_733"] = "{0}-{1}".format(courseDict["begins_at"], courseDict["ends_at"])
-            elementDict["cf_756"] = courseDict["id"]            
-            retLead = mvt.createVtiger("Leads", elementDict)
-            if retLead["success"]:
-                result = retLead['result']
+            if len(regDict) == 0:
+                print("ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
+                log.error( "ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
+                setMessageLogStatus(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,retDict["idmessage_log"],-7)
             else:
-                print( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
-                log.error( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
+                elementDict = {"assigned_user_id":"19x1705","leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]), "cf_744":"{0}".format(retDict["idmessage_log"])}     
+                keyMap = keyLeadMapping[eventTypeCode]
+                for key in regDict:
+                    if key in keyMap:
+                        elementDict[keyMap[key]] = regDict[key]
+                keyMap = keyLeadMapping[retDict["type_event"]]     
+                for key in retDict:
+                    if key in keyMap:
+                        elementDict[keyMap[key]] = retDict[key]
+                courseDict = getCourseById(mvt.host,mvt.port, mvt.user,mvt.password, mvt.database,retDict["course_id"])
+                courseName = "Senza Nome"
+                if "name" in courseDict:
+                    courseName = courseDict["name"]
+                elementDict["cf_726"] = "{0} ({1})".format( courseName, courseDict["language"])
+                elementDict["cf_733"] = "{0}-{1}".format(courseDict["begins_at"], courseDict["ends_at"])
+                if "invoice_code" in retDict:
+                    elementDict["cf_756"] = retDict["invoice_code"]
+                else:
+                    elementDict["cf_756"] = retDict["course_id"]
+                retLead = mvt.createVtiger("Leads", elementDict)
+                if retLead["success"]:
+                    result = retLead['result']
+                else:
+                    print( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
+                    log.error( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
     cursor.close()
     cnx.close()
     retLinks = mvt.createLinks({"name":"value"})
