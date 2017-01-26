@@ -110,6 +110,7 @@ keyLeadMapping = {"registration": {
                                     "email":"email",
                                     "first_name":"firstname",
                                     "last_name":"lastname",
+                                    "company":"company",
                                     "country":"country",  
                                     "job":"cf_758"
                                     },
