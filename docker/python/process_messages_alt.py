@@ -90,7 +90,8 @@ keyLeadMapping = {"registration": {
                                     "address":"lane",
                                     "telephone":"phone",
                                     "company":"company",
-                                    "country":"country"
+                                    "country":"country",    
+                                    "job":"cf_758"
                                     },
                     "consulting": {
                                     "email":"email",
@@ -102,7 +103,15 @@ keyLeadMapping = {"registration": {
                                     "address":"lane",
                                     "telephone":"phone",
                                     "company":"company",
-                                    "country":"country"
+                                    "country":"country",    
+                                    "job":"cf_758"
+                                    },
+                    "newsletter_subscribe": {
+                                    "email":"email",
+                                    "first_name":"firstname",
+                                    "last_name":"lastname",
+                                    "country":"country",  
+                                    "job":"cf_758"
                                     },
                     "course_subscribe": {
                                     "email":"email",
@@ -469,6 +478,7 @@ class MyVtiger:
         entityKey = retDict["email"]
         bNewsletter = True
         if retDict["type_event"] == "registration" and "newsletter" in retDict:
+            print "newsletter is {0}".format(retDict["newsletter"])
             bNewsletter = retDict["newsletter"] == "1"
         if entityKey in self.dictEntities:
             result = self.dictEntities[entityKey]
@@ -516,7 +526,7 @@ class MyVtiger:
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],1)
             else:
                 bHasRegData = False
-                if retDict["type_event"] == "registration" or retDict["type_event"] == "consulting":
+                if retDict["type_event"] == "registration" or retDict["type_event"] == "consulting" or retDict["type_event"] == "newsletter_subscribe":
                     bHasRegData = True
                 else:
                     regDict, reg_idmessage_log, timestamp, eventTypeCode = getLastEventByType(self.host,self.port,self.user,self.password,self.database,"registration",retDict["email"])
@@ -528,6 +538,7 @@ class MyVtiger:
                         print "Registrazione per {0} il {2} con id = {1}".format(retDict["email"],reg_idmessage_log, timestamp)
                         log.info( "Registrazione per {0} il {2} con id = {1}".format(retDict["email"],reg_idmessage_log, timestamp))
                         if "newsletter" in regDict:
+                            print "newsletter is {0}".format(regDict["newsletter"])
                             bNewsletter = regDict["newsletter"] == "1"
                         for key in regDict:
                             keyMap = keyLeadMapping[regDict["type_event"]]
