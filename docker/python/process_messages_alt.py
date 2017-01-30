@@ -798,7 +798,7 @@ def hyper_task():
     print("loop terminated")
 
 # hyper_task()
-
+"""
 from twisted.internet.task import LoopingCall
 from twisted.internet import reactor
     
@@ -806,3 +806,12 @@ from twisted.internet import reactor
 lc = LoopingCall(hyper_task)
 lc.start(60*5)
 reactor.run()
+"""
+
+from twisted.application import service
+from twisted.application.internet import TimerService
+
+application = service.Application("processMessageLog")
+ts = TimerService(60*5,hyper_task)
+ts.setServiceParent(application)
+

@@ -27,6 +27,7 @@ services:
       - /data/python/logs:/usr/src/app/logs
     depends_on:
       - db-mysql
+    restart: always
 
   db-mysql:
     image: mysql
