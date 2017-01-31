@@ -542,7 +542,7 @@ class MyVtiger:
                             print "newsletter is {0}".format(regDict["newsletter"])
                             bNewsletter = regDict["newsletter"] == "1"
                         for key in regDict:
-                            keyMap = keyLeadMapping[regDict["type_event"]]
+                            keyMap = keyLeadMapping["registration"]
                             if key in keyMap:
                                 elementDict[keyMap[key]] = regDict[key]
                         bHasRegData = True
