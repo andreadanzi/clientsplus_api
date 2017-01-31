@@ -593,8 +593,8 @@ class MyVtiger:
             assignedUserId = "19x1705"
             targetType = "Iscrizione Corso"
             cf_1470 = retDict["id"]
-            cf_1226 = retDict["begins_at"]
-            cf_1468 = retDict["ends_at"]
+            cf_1226 = datetime.datetime.strptime(retDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
+            cf_1468 = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
             cf_1469 = retDict["language"]
         elif retDict["type_event"] == "download":
             if "description" in retDict:
@@ -635,8 +635,8 @@ class MyVtiger:
                 assignedUserId = "19x1705"
                 targetType = "Iscrizione Corso"
                 cf_1470 = courseDict["id"]
-                cf_1226 = courseDict["begins_at"]
-                cf_1468 = courseDict["ends_at"]
+                cf_1226 = datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+                cf_1468 = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
                 cf_1469 = courseDict["language"]
                 cf_1225 = "NA"
                 if "invoice_code" in retDict:
@@ -770,7 +770,7 @@ def getMessageLog(host,port, user,password, database):
                 if "name" in courseDict:
                     courseName = courseDict["name"]
                 elementDict["cf_726"] = "{0} ({1})".format( courseName, courseDict["language"])
-                elementDict["cf_733"] = "{0}-{1}".format(courseDict["begins_at"], courseDict["ends_at"])
+                elementDict["cf_733"] = "{0}-{1}".format(datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y"), datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y"))
                 if "invoice_code" in retDict:
                     elementDict["cf_756"] = retDict["invoice_code"]
                 else:
@@ -778,6 +778,7 @@ def getMessageLog(host,port, user,password, database):
                 retLead = mvt.createVtiger("Leads", elementDict)
                 if retLead["success"]:
                     result = retLead['result']
+                    retEvent = mvt.addEventToEntity(retDict, result, "Leads"  )
                 else:
                     print( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
                     log.error( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
