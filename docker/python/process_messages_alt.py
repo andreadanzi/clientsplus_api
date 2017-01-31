@@ -527,6 +527,7 @@ class MyVtiger:
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],1)
             else:
                 bHasRegData = False
+                elementDict = {"assigned_user_id":self.userId,"leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]), "cf_744":"{0}".format(retDict["idmessage_log"])} 
                 if retDict["type_event"] == "registration" or retDict["type_event"] == "consulting" or retDict["type_event"] == "newsletter_subscribe":
                     bHasRegData = True
                 else:
@@ -547,7 +548,7 @@ class MyVtiger:
                                 elementDict[keyMap[key]] = regDict[key]
                         bHasRegData = True
                 if bHasRegData:
-                    elementDict = {"assigned_user_id":self.userId,"newsletter_permission":bNewsletter,"leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]), "cf_744":"{0}".format(retDict["idmessage_log"])}                   
+                    elementDict["newsletter_permission"] = bNewsletter
                     for key in retDict:
                         keyMap = keyLeadMapping[retDict["type_event"]]
                         if key in keyMap:
