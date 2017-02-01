@@ -572,7 +572,7 @@ class MyVtiger:
                             if key in keyMap:
                                 elementDict[keyMap[key]] = regDict[key]
                         bHasRegData = True
-                        elementDict["leadsource"] = "website_registration".format(retDict["type_event"])
+                        elementDict["leadsource"] = "website_registration"
                 if bHasRegData:
                     elementDict["newsletter_permission"] = bNewsletter
                     for key in retDict:
