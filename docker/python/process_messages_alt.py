@@ -354,6 +354,7 @@ class MyVtiger:
         req = urllib2.Request('%s?%s' % (self.url,data))
         
         response = urllib2.urlopen(req,context=self.gcontext).read()
+        
         token = json.loads(response)['result']['token']
         
         # use the token to + accesskey to create the tokenized accessKey
@@ -393,7 +394,13 @@ class MyVtiger:
         data = urllib.urlencode(values)
         req = urllib2.Request("%s?%s" % (self.url,data))
         response = urllib2.urlopen(req,context=self.gcontext)
-        return json.loads(response.read())
+        json_data = {'success':False}
+        try:
+            json_data = json.loads(response.read())
+        except ValueError, e:
+            log.error("Error on decoding JSON data in queryVtiger sQuery={0}".format(sQuery) )
+            json_data['error'] = '{0}'.format(e)
+        return json_data
     
     
     def createVtiger(self, sElementType, elementDict):
@@ -405,7 +412,13 @@ class MyVtiger:
         data = urllib.urlencode(values)
         req = urllib2.Request(self.url,data)
         response = urllib2.urlopen(req,context=self.gcontext)
-        return json.loads(response.read())
+        json_data = {'success':False}
+        try:
+            json_data = json.loads(response.read())
+        except ValueError, e:
+            log.error("Error on decoding JSON data in createVtiger: sElementType={1} - elementDict={0}".format(elementDict,sElementType) )
+            json_data['error'] = '{0}'.format(e)
+        return json_data
     
     def createLinks(self, elementListDict):
         values = {}
@@ -415,7 +428,13 @@ class MyVtiger:
         data = urllib.urlencode(values)
         req = urllib2.Request(self.url,data)
         response = urllib2.urlopen(req,context=self.gcontext)
-        return json.loads(response.read())
+        json_data = {'success':False}
+        try:
+            json_data = json.loads(response.read())
+        except ValueError, e:
+            log.error("Error on decoding JSON data in createLinks elementListDict={0}".format(elementListDict) )
+            json_data['error'] = '{0}'.format(e)
+        return json_data
         
     def updateVtiger(self, sElementType, elementDict):
         values = {}
@@ -426,7 +445,13 @@ class MyVtiger:
         data = urllib.urlencode(values)
         req = urllib2.Request(self.url,data)
         response = urllib2.urlopen(req,context=self.gcontext)
-        return json.loads(response.read())    
+        json_data = {'success':False}
+        try:
+            json_data = json.loads(response.read())
+        except ValueError, e:
+            log.error("Error on decoding JSON data in updateVtiger: sElementType={1} - elementDict={0}".format(elementDict,sElementType) )
+            json_data['error'] = '{0}'.format(e)
+        return json_data
     
     
     def addEventToEntity(self,retDict, entityItem, entityType ):
@@ -547,7 +572,7 @@ class MyVtiger:
                             if key in keyMap:
                                 elementDict[keyMap[key]] = regDict[key]
                         bHasRegData = True
-                        elementDict["leadsource"] = "website_registration"
+                        elementDict["leadsource"] = "website_registration".format(retDict["type_event"])
                 if bHasRegData:
                     elementDict["newsletter_permission"] = bNewsletter
                     for key in retDict:
