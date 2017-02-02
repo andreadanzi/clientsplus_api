@@ -116,7 +116,6 @@ keyLeadMapping = {"registration": {
                                     },
                     "course_subscribe": {
                                     "email":"email",
-                                    "course_id":"cf_747",
                                     "plan":"cf_732",
                                     "intolerance":"cf_1396",
                                     "overnight_stay":"overnight_option",
@@ -552,7 +551,7 @@ class MyVtiger:
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],1)
             else:
                 bHasRegData = False
-                elementDict = {"assigned_user_id":self.userId,"leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]), "cf_744":"{0}".format(retDict["idmessage_log"])} 
+                elementDict = {"assigned_user_id":self.userId,"leadstatus":"Not Contacted", "leadsource":"website_{0}".format(retDict["type_event"]),"cf_747":retDict["targetKey"] , "cf_744":"{0}".format(retDict["idmessage_log"])} 
                 if retDict["type_event"] == "registration" or retDict["type_event"] == "consulting" or retDict["type_event"] == "newsletter_subscribe":
                     bHasRegData = True
                 else:
@@ -601,7 +600,7 @@ class MyVtiger:
         targetname = None
         assignedUserId = self.userId
         cf_1470 = ""
-        cf_1226 = ""
+        sDateEnd = ""
         cf_1225 = ""
         cf_1468 = ""
         cf_1469 = ""
@@ -609,7 +608,13 @@ class MyVtiger:
         cf_1548 = ""
         refId = "{0}_{1}".format(retDict["type_event"],retDict["idmessage_log"]) 
         if retDict["type_event"] == "new_course":
-            targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["id"])
+            sDateBegin = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+            sDateBeginFormat = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d")
+            if "invoice_code" in retDict:
+                cf_1225 = retDict["invoice_code"]
+            else:
+                cf_1225 = retDict["id"]
+            targetKey = "new_course_{0}_{1}".format(cf_1225,sDateBeginFormat)
             cf_1471 = "name"
             if "name" in retDict:
                 targetname = "Corso WEB: {0} ({1})".format(retDict["name"], retDict["id"])
@@ -621,8 +626,8 @@ class MyVtiger:
             assignedUserId = "19x1705"
             targetType = "Iscrizione Corso"
             cf_1470 = retDict["id"]
-            cf_1226 = datetime.datetime.strptime(retDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
-            cf_1468 = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
+            sDateEnd = datetime.datetime.strptime(retDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
+            cf_1468 = sDateBegin 
             cf_1548 = retDict["language"]
         elif retDict["type_event"] == "download":
             if "description" in retDict:
@@ -654,8 +659,14 @@ class MyVtiger:
             targetname = targetType
         elif retDict["type_event"] == "course_subscribe":
             if "course_id" in retDict:
-                targetKey =  "new_course_{0}".format(retDict["course_id"])
                 courseDict = getCourseById(self.host,self.port, self.user,self.password, self.database,retDict["course_id"])
+                sDateBegin = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+                sDateBeginFormat = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d")
+                if "invoice_code" in courseDict:
+                    cf_1225 = courseDict["invoice_code"]
+                else:
+                    cf_1225 = courseDict["id"]
+                targetKey =  "new_course_{0}_{1}".format(cf_1225,sDateBeginFormat)               
                 courseName = "Senza Nome"
                 if "name" in courseDict:
                     courseName = courseDict["name"]
@@ -663,12 +674,9 @@ class MyVtiger:
                 assignedUserId = "19x1705"
                 targetType = "Iscrizione Corso"
                 cf_1470 = courseDict["id"]
-                cf_1226 = datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
-                cf_1468 = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+                sDateEnd = datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+                cf_1468 = sDateBegin
                 cf_1548 = courseDict["language"]
-                cf_1225 = "NA"
-                if "invoice_code" in retDict:
-                    cf_1225 = retDict["invoice_code"]
                 cf_1471 = courseName
             else:
                 print( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"course_id") )
@@ -698,9 +706,8 @@ class MyVtiger:
                                        "target_type" : targetType,  
                                        "target_state" : "In preparazione" , 
                                        "cf_1225":cf_1225,
-                                       "cf_1226":cf_1226, 
+                                       "cf_1226":sDateEnd, 
                                        "cf_1548":cf_1548,
-                                       "cf_1006":targetKey, 
                                        "cf_1545":targetKey, 
                                        "cf_1546":refId}
                         ret = self.createVtiger("Targets", targetDict)
