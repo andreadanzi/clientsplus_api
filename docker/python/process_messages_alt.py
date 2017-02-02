@@ -608,8 +608,8 @@ class MyVtiger:
         cf_1548 = ""
         refId = "{0}_{1}".format(retDict["type_event"],retDict["idmessage_log"]) 
         if retDict["type_event"] == "new_course":
-            sDateBegin = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
-            sDateBeginFormat = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d")
+            sDateBegin = datetime.datetime.strptime(retDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+            sDateBeginFormat = datetime.datetime.strptime(retDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d")
             if "invoice_code" in retDict:
                 cf_1225 = retDict["invoice_code"]
             else:
@@ -626,7 +626,7 @@ class MyVtiger:
             assignedUserId = "19x1705"
             targetType = "Iscrizione Corso"
             cf_1470 = retDict["id"]
-            sDateEnd = datetime.datetime.strptime(retDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
+            sDateEnd = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
             cf_1468 = sDateBegin 
             cf_1548 = retDict["language"]
         elif retDict["type_event"] == "download":
@@ -660,8 +660,8 @@ class MyVtiger:
         elif retDict["type_event"] == "course_subscribe":
             if "course_id" in retDict:
                 courseDict = getCourseById(self.host,self.port, self.user,self.password, self.database,retDict["course_id"])
-                sDateBegin = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
-                sDateBeginFormat = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d")
+                sDateBegin = datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+                sDateBeginFormat = datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%Y-%m-%d")
                 if "invoice_code" in courseDict:
                     cf_1225 = courseDict["invoice_code"]
                 else:
@@ -674,7 +674,7 @@ class MyVtiger:
                 assignedUserId = "19x1705"
                 targetType = "Iscrizione Corso"
                 cf_1470 = courseDict["id"]
-                sDateEnd = datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+                sDateEnd = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
                 cf_1468 = sDateBegin
                 cf_1548 = courseDict["language"]
                 cf_1471 = courseName
