@@ -606,6 +606,7 @@ class MyVtiger:
         cf_1468 = ""
         cf_1469 = ""
         cf_1471 = ""
+        cf_1548 = ""
         refId = "{0}_{1}".format(retDict["type_event"],retDict["idmessage_log"]) 
         if retDict["type_event"] == "new_course":
             targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["id"])
@@ -622,7 +623,7 @@ class MyVtiger:
             cf_1470 = retDict["id"]
             cf_1226 = datetime.datetime.strptime(retDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
             cf_1468 = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
-            cf_1469 = retDict["language"]
+            cf_1548 = retDict["language"]
         elif retDict["type_event"] == "download":
             if "description" in retDict:
                 targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["description"])
@@ -664,7 +665,7 @@ class MyVtiger:
                 cf_1470 = courseDict["id"]
                 cf_1226 = datetime.datetime.strptime(courseDict["begins_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
                 cf_1468 = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
-                cf_1469 = courseDict["language"]
+                cf_1548 = courseDict["language"]
                 cf_1225 = "NA"
                 if "invoice_code" in retDict:
                     cf_1225 = retDict["invoice_code"]
@@ -698,6 +699,7 @@ class MyVtiger:
                                        "target_state" : "In preparazione" , 
                                        "cf_1225":cf_1225,
                                        "cf_1226":cf_1226, 
+                                       "cf_1548":cf_1548,
                                        "cf_1006":targetKey, 
                                        "cf_1545":targetKey, 
                                        "cf_1546":refId}
