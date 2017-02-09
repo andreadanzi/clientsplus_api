@@ -80,19 +80,22 @@ def main(argv):
                                     targetDict[sTargetName] = item
                                 if not bTargetFound:
                                     newItem = {"targetname":sTargetName,  
-                                       "assigned_user_id":9,   
+                                       "assigned_user_id":"19x9",   
                                        "target_type" : "Form Fiere",  
                                        "target_state" : "In preparazione" , 
                                        "cf_1545":sTargetName}
-                                    ret = self.createVtiger("Targets", newItem)
-                                    if ret["success"]:
-                                        targetItem = ret['result'] 
+                                    newItem["targetname"] = sTargetName
+                                    newItem["cf_1545"] = sTargetName
+                                    newItem["target_type"] = "Form Fiere"
+                                    retTarget = vtc.createVtiger("Targets", newItem)
+                                    if retTarget["success"]:
+                                        targetItem = retTarget['result'] 
                                         targetDict[sTargetName] = targetItem
                                         print(  "Creato TARGET {0} in VTE ".format(targetItem["id"] ))
                                         log.info(  "Creato TARGET {0} in VTE ".format(targetItem["id"] ))
                                     else:
-                                        print( "ERRORE: Errore in creazione {0} [{1}] ".format( sQueryTargets, ret) )
-                                        log.error( "ERRORE: Errore in creazione {0} [{1}] ".format( sQueryTargets, ret) )                                        
+                                        print( "ERRORE: Errore in creazione {0} [{1}] ".format( sQueryTargets, retTarget) )
+                                        log.error( "ERRORE: Errore in creazione {0} [{1}] ".format( sQueryTargets, retTarget) )                      
                             else:
                                 print( "ERRORE: Errore in ricerca Targets {0} [{1}] ".format( sQueryTargets, ret))
                                 log.error( "ERRORE: Errore in ricerca Targets {0} [{1}] ".format( sQueryTargets, ret))
