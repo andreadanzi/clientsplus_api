@@ -2,3 +2,5 @@
 /web/logs/*
 !/web/logs/README.md
 *.log
+*.xls
+*.pyc
