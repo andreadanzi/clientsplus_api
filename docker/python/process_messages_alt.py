@@ -702,8 +702,8 @@ class MyVtiger:
                         result = item
                     if( result ):
                         self.dictTargets[targetKey] = result
-                        print(  "trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
-                        log.info(  "trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
+                        print(  u"trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
+                        log.info(  u"trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
                         if retDict["type_event"] == "new_course":
                             setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],2)
                     else:
