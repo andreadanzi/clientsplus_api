@@ -620,7 +620,7 @@ class MyVtiger:
                 cf_1225 = retDict["invoice_code"]
             else:
                 cf_1225 = retDict["id"]
-            targetKey = "new_course_{0}_{1}".format(cf_1225,sDateBeginFormat)
+            targetKey = u"new_course_{0}_{1}".format(cf_1225,sDateBeginFormat)
             cf_1471 = "name"
             if "name" in retDict:
                 targetname = "Corso WEB: {0} ({1})".format(retDict["name"], retDict["id"])
@@ -637,7 +637,7 @@ class MyVtiger:
             cf_1548 = retDict["language"]
         elif retDict["type_event"] == "download":
             if "description" in retDict:
-                targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["description"])
+                targetKey =  u"{0}_{1}".format(retDict["type_event"],retDict["description"])
                 targetType = "Download"
                 targetname = "Download WEB: {0} {1}".format(retDict["type_event"],retDict["description"])
             else:
@@ -645,7 +645,7 @@ class MyVtiger:
                 log.error( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"description"))
         elif retDict["type_event"] == "consulting":
             if "category" in retDict:
-                targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["category"])
+                targetKey =  u"{0}_{1}".format(retDict["type_event"],retDict["category"])
                 targetType = "Richiesta Consulenze (Form)"
                 targetname = "Consulenza WEB: {0}".format(retDict["category"])
             else:
@@ -672,7 +672,7 @@ class MyVtiger:
                     cf_1225 = courseDict["invoice_code"]
                 else:
                     cf_1225 = courseDict["id"]
-                targetKey =  "new_course_{0}_{1}".format(cf_1225,sDateBeginFormat)               
+                targetKey =  u"new_course_{0}_{1}".format(cf_1225,sDateBeginFormat)               
                 courseName = "Senza Nome"
                 if "name" in courseDict:
                     courseName = courseDict["name"]
@@ -702,8 +702,8 @@ class MyVtiger:
                         result = item
                     if( result ):
                         self.dictTargets[targetKey] = result
-                        print(  u"trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
-                        log.info(  u"trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
+                        print(  "trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
+                        log.info(  "trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
                         if retDict["type_event"] == "new_course":
                             setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],2)
                     else:
