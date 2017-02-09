@@ -690,8 +690,8 @@ class MyVtiger:
         if targetKey:
             if targetKey in self.dictTargets: 
                 result = self.dictTargets[targetKey]
-                print(  u"trovato TARGET {0} {1} nella cache con key = {2}".format(result["id"], result["targetname"], targetKey ))
-                log.info(  u"trovato TARGET {0} {1} nella cache con key = {2}".format(result["id"], result["targetname"], targetKey ))
+                print(  u"trovato TARGET {0} nella cache con key = {1}".format(result["id"],  targetKey ))
+                log.info(  u"trovato TARGET {0} nella cache con key = {1}".format(result["id"], targetKey ))
                 if retDict["type_event"] == "new_course":
                     setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],1)
             else:
@@ -702,8 +702,8 @@ class MyVtiger:
                         result = item
                     if( result ):
                         self.dictTargets[targetKey] = result
-                        print(  u"trovato TARGET {0} {1} in VTE con cf_1545 = {2}".format(result["id"], result["targetname"], targetKey ))
-                        log.info(  u"trovato TARGET {0} {1} in VTE con cf_1545 = {2}".format(result["id"], result["targetname"], targetKey ))
+                        print(  u"trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
+                        log.info(  u"trovato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"], targetKey ))
                         if retDict["type_event"] == "new_course":
                             setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],2)
                     else:
@@ -720,8 +720,8 @@ class MyVtiger:
                         if ret["success"]:
                             result = ret['result'] 
                             self.dictTargets[targetKey] = result
-                            print(  u"Creato TARGET {0} {1} in VTE con cf_1545 = {2}".format(result["id"], result["targetname"], targetKey ))
-                            log.info(  u"Creato TARGET {0} {1} in VTE con cf_1545 = {2}".format(result["id"], result["targetname"], targetKey ))
+                            print(  u"Creato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"],  targetKey ))
+                            log.info(  u"Creato TARGET {0} in VTE con cf_1545 = {1}".format(result["id"],  targetKey ))
                             if retDict["type_event"] == "new_course":
                                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],3)
                         else:
