@@ -478,6 +478,12 @@ class MyVtiger:
         else:
             eventDict["parent_id"] = entityItem["id"]
         
+        if retDict["type_event"] == "download":
+            eventDict["is_all_day_event"] = 1
+            eventDict["time_end"] = "23:59"
+            eventDict["time_start"] = "00:00"
+            eventDict["due_date"] = eventDict["date_start"]
+            
         if retDict["type_event"] == "consulting":
             eventDict["subject"] = "{0} ({1})".format(eventDict["subject"],retDict["category"])
             if "file" in retDict:
