@@ -21,7 +21,7 @@ file_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 file_handler.setFormatter(formatter)
 log.addHandler(file_handler)
-print("started on {0}".format( os.getcwd()) )
+print(u"started on {0}".format( os.getcwd()) )
 log.debug("started on {0}".format( os.getcwd()))
 # "email":"pippo@pippo.com", "lastname":"bello", "firstname":"pippo", "newsletter_permission":1, "company":"example", "assigned_user_id":userId}
 # {u'city': u'Roma', u'first_name': u'Mario', u'last_name': u'Rossi', u'tel': u'+391234567890', u'zip': u'12345', u'language': u'IT', u'country': u'IT', u'company': u'Mario Rossi Engineering', u'job': u'engineer', u'address': u'Piazza del Popolo 11', u'region': u'IT-62'}
@@ -369,7 +369,7 @@ class MyVtiger:
         response = json.loads(response.read())
         print(  "######## login as {0} ".format(self.username) )
         if not response["success"]:
-            print( "ERRORE: login failed" )
+            print( u"ERRORE: login failed" )
             exit(1)
         
         self.userId = response["result"]["userId"]
@@ -497,7 +497,7 @@ class MyVtiger:
             setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],3)
             result = ret["result"]
         else:
-            print( "ERRORE: Error on create event {0}".format(ret) )
+            print( u"ERRORE: Error on create event {0}".format(ret) )
             log.error( "ERRORE: Error on create event {0}".format(ret) )
             
             setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-5)
@@ -520,10 +520,10 @@ class MyVtiger:
             if ret['success']:
                 for item in ret['result']:
                     self.dictEntities[entityKey].append(('Leads',item, False))
-                    print( "Trovato Leads con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
+                    print( u"Trovato Leads con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
                     log.info( "Trovato Leads con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
             else:
-                print( "ERRORE: Errore in ricerca Leads {0} [{1}] ".format( sQueryLeads, ret))
+                print( u"ERRORE: Errore in ricerca Leads {0} [{1}] ".format( sQueryLeads, ret))
                 log.error( "ERRORE: Errore in ricerca Leads {0} [{1}] ".format( sQueryLeads, ret))
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-1)
             
@@ -536,7 +536,7 @@ class MyVtiger:
                     print(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
                     log.info(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
             else:
-                print( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
+                print( u"ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
                 log.error( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-2)
             
@@ -546,10 +546,10 @@ class MyVtiger:
             if ret['success']:
                 for item in ret['result']:
                     self.dictEntities[entityKey].append(('Contacts',item, False))
-                    print( "Trovato Contacts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ) )
+                    print( u"Trovato Contacts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ) )
                     log.info( "Trovato Contacts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ) )
             else:
-                print( "ERRORE: Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
+                print( u"ERRORE: Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
                 log.error( "ERRORE: Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-3)
             
@@ -563,7 +563,7 @@ class MyVtiger:
                 else:
                     regDict, reg_idmessage_log, timestamp, eventTypeCode = getLastEventByType(self.host,self.port,self.user,self.password,self.database,"registration",retDict["email"])
                     if len(regDict) == 0:
-                        print("ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
+                        print(u"ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
                         log.error( "ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
                         setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-6)
                     else:
@@ -590,12 +590,12 @@ class MyVtiger:
                         if retDict["type_event"] == "course_subscribe":
                             bCourseAdded = True
                         self.dictEntities[entityKey].append(('Leads',ret["result"], bCourseAdded))
-                        print( "Aggiunto nuovo Lead con entityKey = {0} e id = {1}".format(entityKey,ret["result"]["id"] ) )
+                        print( u"Aggiunto nuovo Lead con entityKey = {0} e id = {1}".format(entityKey,ret["result"]["id"] ) )
                         log.info( "Aggiunto nuovo Lead con entityKey = {0} e id = {1}".format(entityKey,ret["result"]["id"] ) )
                         setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],2)
                     else:
                         setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-4)
-                        print( "ERRORE: Errore in creazione Lead {0} [{1}] ".format( elementDict, ret)) 
+                        print( u"ERRORE: Errore in creazione Lead {0} [{1}] ".format( elementDict, ret)) 
                         log.error( "ERRORE: Errore in creazione Lead {0} [{1}] ".format( elementDict, ret)) 
             result = self.dictEntities[entityKey]       
         return result
@@ -627,7 +627,7 @@ class MyVtiger:
                 cf_1471 = retDict["name"]
             else:
                 targetname = "Corso WEB: Corso senza nome ({0})".format(retDict["id"])
-                print( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"name"))
+                print( u"ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"name"))
                 log.error( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"name"))
             assignedUserId = "19x1705"
             targetType = "Iscrizione Corso"
@@ -641,7 +641,7 @@ class MyVtiger:
                 targetType = "Download"
                 targetname = "Download WEB: {0} {1}".format(retDict["type_event"],retDict["description"])
             else:
-                print( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"description"))
+                print( u"ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"description"))
                 log.error( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"description"))
         elif retDict["type_event"] == "consulting":
             if "category" in retDict:
@@ -649,7 +649,7 @@ class MyVtiger:
                 targetType = "Richiesta Consulenze (Form)"
                 targetname = "Consulenza WEB: {0}".format(retDict["category"])
             else:
-                print( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"category"))
+                print( u"ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"category"))
                 log.error( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"category"))
         elif retDict["type_event"] == "registration":
             targetKey =  retDict["type_event"]
@@ -685,7 +685,7 @@ class MyVtiger:
                 cf_1548 = courseDict["language"]
                 cf_1471 = courseName
             else:
-                print( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"course_id") )
+                print( u"ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"course_id") )
                 log.error( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"course_id") )
         if targetKey:
             if targetKey in self.dictTargets: 
@@ -725,12 +725,12 @@ class MyVtiger:
                             if retDict["type_event"] == "new_course":
                                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],3)
                         else:
-                            print( "ERRORE: Errore in creazione {0} {1} [{2}] ".format( sQueryTargets,retDict["idmessage_log"], ret) )
+                            print( u"ERRORE: Errore in creazione {0} {1} [{2}] ".format( sQueryTargets,retDict["idmessage_log"], ret) )
                             log.error( "ERRORE: Errore in creazione {0} {1} [{2}] ".format( sQueryTargets,retDict["idmessage_log"], ret) )
                             if retDict["type_event"] == "new_course":
                                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-3)
                 else:
-                    print( "ERRORE: Errore in ricerca {0} {1} [{2}] ".format( sQueryTargets,retDict["idmessage_log"], ret) )
+                    print( u"ERRORE: Errore in ricerca {0} {1} [{2}] ".format( sQueryTargets,retDict["idmessage_log"], ret) )
                     log.error( "ERRORE: Errore in ricerca {0} {1} [{2}] ".format( sQueryTargets,retDict["idmessage_log"], ret) )
                     if retDict["type_event"] == "new_course":
                         setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-1)
@@ -759,7 +759,7 @@ def getMessageLog(host,port, user,password, database):
     for row in cursor:
         type_event = row[3] 
         retDict, eventTypeCode = getMessage(host,port, user,password, database,row[0])
-        print( "###### message_log id = {0} by {1} type {2} at {3}".format(row[0],row[5],row[3],row[1]))
+        print( u"###### message_log id = {0} by {1} type {2} at {3}".format(row[0],row[5],row[3],row[1]))
         log.info( "###### message_log id = {0} by {1} type {2} at {3}".format(row[0],row[5],row[3],row[1]))
         retDict["idmessage_log"] = row[0]
         retDict["email"] = row[5]
@@ -794,7 +794,7 @@ def getMessageLog(host,port, user,password, database):
         if type_event == 'course_subscribe':
             regDict, reg_idmessage_log, timestamp, eventTypeCode = getLastEventByType(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,"registration",retDict["email"])
             if len(regDict) == 0:
-                print("ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
+                print(u"ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
                 log.error( "ERRORE: manca registrazione per {0} {1}".format(retDict["email"],retDict["type_event"]))
                 setMessageLogStatus(mvt.host,mvt.port,mvt.user,mvt.password,mvt.database,retDict["idmessage_log"],-7)
             else:
@@ -822,23 +822,23 @@ def getMessageLog(host,port, user,password, database):
                     result = retLead['result']
                     retEvent = mvt.addEventToEntity(retDict, result, "Leads"  )
                 else:
-                    print( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
+                    print( u"ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
                     log.error( "ERRORE: Errore in creazione Lead per message_log con id {2} -  Lead element = {0} - [{1}] ".format( elementDict, retLead, retDict["idmessage_log"]) )
     cursor.close()
     cnx.close()
     retLinks = mvt.createLinks({"name":"value"})
     if not retLinks["success"]:
-        print( "ERRORE: Errore in creazione link Target vs Entityies  [{0}] ".format( retLinks) )     
+        print( u"ERRORE: Errore in creazione link Target vs Entityies  [{0}] ".format( retLinks) )     
         log.error( "ERRORE: Errore in creazione link Target vs Entityies  [{0}] ".format( retLinks) )         
     return True
 
 
-print("setup....")   
+print(u"setup....")   
     
 def hyper_task():
-    print("starting loop....")
+    print(u"starting loop....")
     getMessageLog(sHost,sPort,sUser,sPass,sDB)
-    print("loop terminated")
+    print(u"loop terminated")
 
 # hyper_task()
 """
