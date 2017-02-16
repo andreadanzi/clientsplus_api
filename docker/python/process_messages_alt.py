@@ -527,24 +527,14 @@ class MyVtiger:
                 log.error( "ERRORE: Errore in ricerca Leads {0} [{1}] ".format( sQueryLeads, ret))
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-1)
             
-            # Search Accounts
-            sQueryAccounts = "SELECT * FROM Accounts WHERE email1 = '{0}';".format(entityKey)
-            ret = self.queryVtiger(sQueryAccounts)
-            if ret['success']:
-                for item in ret['result']:
-                    self.dictEntities[entityKey].append(('Accounts',item, False))
-                    print(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
-                    log.info(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
-            else:
-                print( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
-                log.error( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
-                setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-2)
-            
+            accountIds = []
             # Search Contacts
             sQueryContacts = "SELECT * FROM Contacts WHERE email = '{0}';".format(entityKey)
             ret = self.queryVtiger(sQueryContacts)
             if ret['success']:
                 for item in ret['result']:
+                    if "account_id" in item:
+                        accountIds.append(item["account_id"])
                     self.dictEntities[entityKey].append(('Contacts',item, False))
                     print( "Trovato Contacts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ) )
                     log.info( "Trovato Contacts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ) )
@@ -552,6 +542,22 @@ class MyVtiger:
                 print( "ERRORE: Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
                 log.error( "ERRORE: Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-3)
+                
+            # Search Accounts
+            sQueryAccounts = "SELECT * FROM Accounts WHERE email1 = '{0}';".format(entityKey)
+            ret = self.queryVtiger(sQueryAccounts)
+            if ret['success']:
+                for item in ret['result']:
+                    if item["id"] not in accountIds:
+                        self.dictEntities[entityKey].append(('Accounts',item, False))
+                        print(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
+                        log.info(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
+            else:
+                print( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
+                log.error( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
+                setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-2)
+            
+        
             
             if entityKey in self.dictEntities:
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],1)
