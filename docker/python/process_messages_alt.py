@@ -505,6 +505,7 @@ class MyVtiger:
     
     def processEmail(self,retDict):
         result = None
+        retAccountToSkip=[]
         entityKey = None
         entityKey = retDict["email"]
         bNewsletter = True
@@ -549,9 +550,13 @@ class MyVtiger:
             if ret['success']:
                 for item in ret['result']:
                     if item["id"] not in accountIds:
-                        self.dictEntities[entityKey].append(('Accounts',item, False))
                         print(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
                         log.info(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
+                    else:
+                        retAccountToSkip.append(item["id"])
+                        print(  "Trovato Accounts con entityKey = {0} e id = {1} già presente come contatto".format(entityKey,item["id"] ))
+                        log.info(  "Trovato Accounts con entityKey = {0} e id = {1} già presente come contatto".format(entityKey,item["id"] ))
+                    self.dictEntities[entityKey].append(('Accounts',item, False))
             else:
                 print( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
                 log.error( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
@@ -604,7 +609,7 @@ class MyVtiger:
                         print( "ERRORE: Errore in creazione Lead {0} [{1}] ".format( elementDict, ret)) 
                         log.error( "ERRORE: Errore in creazione Lead {0} [{1}] ".format( elementDict, ret)) 
             result = self.dictEntities[entityKey]       
-        return result
+        return result, retAccountToSkip
 
     def searchTarget(self,retDict):
         result = None
@@ -774,8 +779,9 @@ def getMessageLog(host,port, user,password, database):
         targetKey, retTargetVal = mvt.searchTarget(retDict)
         retDict["targetKey"] = targetKey
         retEntityList = []
+        retAccountToSkip = []
         if type_event != 'new_course':
-            retEntityList = mvt.processEmail(retDict)
+            retEntityList, retAccountToSkip = mvt.processEmail(retDict)
         """
         $relentity["crmid"];
         $relentity["module"];
@@ -785,7 +791,10 @@ def getMessageLog(host,port, user,password, database):
         bNewLead = False
         iNum = 0
         for entityItem in retEntityList:
-            retEvent = mvt.addEventToEntity(retDict, entityItem[1],entityItem[0]  )
+            if entityItem[1]["id"] not in retAccountToSkip:
+                retEvent = mvt.addEventToEntity(retDict, entityItem[1],entityItem[0]  )
+            else:
+                log.info("Skip addEventToEntity for Account {0} with id {1} because it is related to its Contact".format(entityItem[1]["accountname"],entityItem[1]["id"]))
             bNewLead = entityItem[2]
             # elementListDict[iNum] = {"crmid":retTargetVal["id"],"relcrmid":entityItem[1]["id"]}
             iNum += 1
