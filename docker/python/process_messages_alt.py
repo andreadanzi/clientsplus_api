@@ -556,8 +556,8 @@ class MyVtiger:
                         log.info(  "Trovato Accounts con entityKey = {0} e id = {1}".format(entityKey,item["id"] ))
                     else:
                         retAccountToSkip.append(item["id"])
-                        print(  "Trovato Accounts con entityKey = {0} e id = {1} già presente come contatto".format(entityKey,item["id"] ))
-                        log.info(  "Trovato Accounts con entityKey = {0} e id = {1} già presente come contatto".format(entityKey,item["id"] ))
+                        print(  "Trovato Accounts con entityKey = {0} e id = {1} gia presente come contatto".format(entityKey,item["id"] ))
+                        log.info(  "Trovato Accounts con entityKey = {0} e id = {1} gia presente come contatto".format(entityKey,item["id"] ))
                     self.dictEntities[entityKey].append(('Accounts',item, False))
             else:
                 print( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
