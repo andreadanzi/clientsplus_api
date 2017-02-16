@@ -515,6 +515,7 @@ class MyVtiger:
         if entityKey in self.dictEntities:
             result = self.dictEntities[entityKey]
         else:
+            log.info("Search Leads with email = {0}".format(entityKey))
             # Search Leads
             sQueryLeads = "SELECT * FROM Leads WHERE leadsource != 'website_course_subscribe' AND email  = '{0}';".format(entityKey)
             ret = self.queryVtiger(sQueryLeads)
@@ -529,6 +530,7 @@ class MyVtiger:
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-1)
             
             accountIds = []
+            log.info("Search Contacts with email = {0}".format(entityKey))
             # Search Contacts
             sQueryContacts = "SELECT * FROM Contacts WHERE email = '{0}';".format(entityKey)
             ret = self.queryVtiger(sQueryContacts)
@@ -543,7 +545,7 @@ class MyVtiger:
                 print( "ERRORE: Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
                 log.error( "ERRORE: Errore in ricerca Contacts {0} [{1}] ".format( sQueryContacts, ret) )
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-3)
-                
+            log.info("Search Accounts with email1 = {0}".format(entityKey))
             # Search Accounts
             sQueryAccounts = "SELECT * FROM Accounts WHERE email1 = '{0}';".format(entityKey)
             ret = self.queryVtiger(sQueryAccounts)
@@ -562,9 +564,9 @@ class MyVtiger:
                 log.error( "ERRORE: Errore in ricerca Accounts {0} [{1}] ".format( sQueryAccounts, ret) )
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],-2)
             
-        
-            
+            log.info( "search terminated")
             if entityKey in self.dictEntities:
+                log.info("{0} already in dictEntities".format(entityKey))
                 setMessageLogStatus(self.host,self.port,self.user,self.password,self.database,retDict["idmessage_log"],1)
             else:
                 bHasRegData = False
