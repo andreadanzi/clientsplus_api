@@ -794,7 +794,7 @@ def getMessageLog(host,port, user,password, database):
             if entityItem[1]["id"] not in retAccountToSkip:
                 retEvent = mvt.addEventToEntity(retDict, entityItem[1],entityItem[0]  )
             else:
-                log.info("Skip addEventToEntity for Account {0} with id {1} because it is related to its Contact".format(entityItem[1]["accountname"],entityItem[1]["id"]))
+                log.info("Skip addEventToEntity for Account with id {0} because it is related to its Contact".format(entityItem[1]["id"]))
             bNewLead = entityItem[2]
             # elementListDict[iNum] = {"crmid":retTargetVal["id"],"relcrmid":entityItem[1]["id"]}
             iNum += 1
