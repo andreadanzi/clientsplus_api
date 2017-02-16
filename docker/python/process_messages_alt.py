@@ -843,7 +843,12 @@ print("setup....")
     
 def hyper_task():
     print("starting loop....")
-    getMessageLog(sHost,sPort,sUser,sPass,sDB)
+    try:
+        getMessageLog(sHost,sPort,sUser,sPass,sDB)
+    except Exception as e:
+        log.error("Exception on getMessageLog. {0}".format(e))
+    except:
+        log.error("Unexpetced Exception in getMessageLog")
     print("loop terminated")
 
 # hyper_task()
