@@ -778,6 +778,8 @@ def getMessageLog(host,port, user,password, database):
         retDict["type_event"] = type_event  
         targetKey, retTargetVal = mvt.searchTarget(retDict)
         retDict["targetKey"] = targetKey
+        log.info("Target with id {0} and key {1}".format( retTargetVal["id"],targetKey))
+        print("Target with id {0} and key {1}".format( retTargetVal["id"],targetKey))
         retEntityList = []
         retAccountToSkip = []
         if type_event != 'new_course':
@@ -791,10 +793,15 @@ def getMessageLog(host,port, user,password, database):
         bNewLead = False
         iNum = 0
         for entityItem in retEntityList:
+            log.info("Processing event for {0} with id {1}".format(entityItem[0], entityItem[1]["id"]))
+            print("Processing event for {0} with id {1}".format(entityItem[0], entityItem[1]["id"]))
             if entityItem[1]["id"] not in retAccountToSkip:
                 retEvent = mvt.addEventToEntity(retDict, entityItem[1],entityItem[0]  )
+                log.info("addEventToEntity terminated {0}".format(result))
+                print("addEventToEntity terminated {0}".format(result))
             else:
                 log.info("Skip addEventToEntity for Account with id {0} because it is related to its Contact".format(entityItem[1]["id"]))
+                print("Skip addEventToEntity for Account with id {0} because it is related to its Contact".format(entityItem[1]["id"]))
             bNewLead = entityItem[2]
             # elementListDict[iNum] = {"crmid":retTargetVal["id"],"relcrmid":entityItem[1]["id"]}
             iNum += 1
@@ -856,8 +863,10 @@ def hyper_task():
         getMessageLog(sHost,sPort,sUser,sPass,sDB)
     except Exception as e:
         log.error("Exception on getMessageLog. {0}".format(e))
+        print "Exception on getMessageLog. {0}".format(e)
     except:
         log.error("Unexpetced Exception in getMessageLog")
+        print "Unexpetced Exception in getMessageLog"
     print("loop terminated")
 
 # hyper_task()
