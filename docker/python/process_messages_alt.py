@@ -799,8 +799,8 @@ def getMessageLog(host,port, user,password, database):
             print("Processing event for {0} with id {1}".format(entityItem[0], entityItem[1]["id"]))
             if entityItem[1]["id"] not in retAccountToSkip:
                 retEvent = mvt.addEventToEntity(retDict, entityItem[1],entityItem[0]  )
-                log.info("addEventToEntity terminated {0}".format(result))
-                print("addEventToEntity terminated {0}".format(result))
+                log.info("addEventToEntity terminated {0}".format(retEvent))
+                print("addEventToEntity terminated {0}".format(retEvent))
             else:
                 log.info("Skip addEventToEntity for Account with id {0} because it is related to its Contact".format(entityItem[1]["id"]))
                 print("Skip addEventToEntity for Account with id {0} because it is related to its Contact".format(entityItem[1]["id"]))
