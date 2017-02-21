@@ -222,7 +222,7 @@ def getCourseById(host,port, user,password, database,id_course):
     query = """SELECT 
                message.datastructure_name,
                         CASE
-                            WHEN message.datastructure_name in ("begins_at","ends_at") THEN from_unixtime(message.datastructure_value)
+                            WHEN message.datastructure_name in ("begins_at","ends_at") THEN CONVERT_TZ( FROM_UNIXTIME(message.datastructure_value), 'GMT', 'CET')
                             ELSE message.datastructure_value
                         END AS datastructure_my_value ,
                         event_types.event_type_code,
@@ -262,7 +262,7 @@ def getMessage(host,port, user,password, database,idmessage_log):
     query = """SELECT 
                 message.datastructure_name,
                 CASE
-                    WHEN message.datastructure_name in ("begins_at","ends_at") THEN from_unixtime(message.datastructure_value)
+                    WHEN message.datastructure_name in ("begins_at","ends_at") THEN CONVERT_TZ( FROM_UNIXTIME(message.datastructure_value), 'GMT', 'CET')
                     ELSE message.datastructure_value
                 END AS datastructure_my_value ,
                 event_types.event_type_code,
@@ -292,7 +292,7 @@ def getLastEventByType(host,port, user,password, database,type_event,by_email):
                         max(message_log.timestamp),
                         message.datastructure_name,
                         CASE
-                            WHEN message.datastructure_name in ("begins_at","ends_at") THEN from_unixtime(message.datastructure_value)
+                            WHEN message.datastructure_name in ("begins_at","ends_at") THEN CONVERT_TZ( FROM_UNIXTIME(message.datastructure_value), 'GMT', 'CET')
                             ELSE message.datastructure_value
                         END AS datastructure_my_value ,
                         event_types.event_type_code,
@@ -619,7 +619,7 @@ class MyVtiger:
         targetname = None
         assignedUserId = self.userId
         cf_1470 = ""
-        sDateEnd = ""
+        sDateCourse = ""
         cf_1225 = ""
         cf_1468 = ""
         cf_1469 = ""
@@ -645,7 +645,7 @@ class MyVtiger:
             assignedUserId = "19x1705"
             targetType = "Iscrizione Corso"
             cf_1470 = retDict["id"]
-            sDateEnd = datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
+            sDateCourse = sDateBegin + "-" + datetime.datetime.strptime(retDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y") 
             cf_1468 = sDateBegin 
             cf_1548 = retDict["language"]
         elif retDict["type_event"] == "download":
@@ -693,7 +693,7 @@ class MyVtiger:
                 assignedUserId = "19x1705"
                 targetType = "Iscrizione Corso"
                 cf_1470 = courseDict["id"]
-                sDateEnd = datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
+                sDateCourse = sDateBegin + "-" + datetime.datetime.strptime(courseDict["ends_at"],"%Y-%m-%d %H:%M:%S.%f").strftime("%d/%m/%Y")
                 cf_1468 = sDateBegin
                 cf_1548 = courseDict["language"]
                 cf_1471 = courseName
@@ -725,7 +725,7 @@ class MyVtiger:
                                        "target_type" : targetType,  
                                        "target_state" : "In preparazione" , 
                                        "cf_1225":cf_1225,
-                                       "cf_1226":sDateEnd, 
+                                       "cf_1226":sDateCourse, 
                                        "cf_1548":cf_1548,
                                        "cf_1545":targetKey, 
                                        "cf_1546":refId}
