@@ -10,6 +10,7 @@ import datetime
 from hashlib import md5
 import logging
 import logging.handlers
+import re
 
 
 log = logging.getLogger()
@@ -649,10 +650,11 @@ class MyVtiger:
             cf_1468 = sDateBegin 
             cf_1548 = retDict["language"]
         elif retDict["type_event"] == "download":
-            if "description" in retDict:
-                targetKey =  "{0}_{1}".format(retDict["type_event"],retDict["description"])
+            if "description" in retDict:                
+                sTgDescr = re.sub('[^A-Za-z0-9]+', '_',retDict["description"])
+                targetKey =  "{0}_{1}".format(retDict["type_event"],sTgDescr)
                 targetType = "Download"
-                targetname = "Download WEB: {0} {1}".format(retDict["type_event"],retDict["description"])
+                targetname = "Download WEB: {0} {1}".format(retDict["type_event"],sTgDescr)
             else:
                 print( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"description"))
                 log.error( "ERRORE: {0}-{1} missing {2}".format(retDict["idmessage_log"],retDict["type_event"],"description"))

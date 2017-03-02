@@ -163,7 +163,11 @@ $app->post('/message', function ($request, $response) {
             $sth->bindParam("type_event", $input['type']);
             $sth->bindParam("by_email", $input['by']);
             $sth->bindParam("hashstring",$hashed);
-            $sth->bindParam("payload",json_encode($payload) );
+            $insert_payload = $payload;
+            if( array_key_exists("file",$insert_payload )) {
+               unset($insert_payload['file']);
+            }
+            $sth->bindParam("payload",json_encode($insert_payload) );
             $sth->execute();
             $input['id'] = $this->db->lastInsertId();
             $this->logger->addInfo("new message_log id = " . $input["id"]);
